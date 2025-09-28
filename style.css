@@ -9,4 +9,36 @@ body{
 .grid-container{
   display: grid;
   grid-template-columns: 200px 150px 100px;
+  column-gap:10px ;
+  row-gap: 10px;
+  margin-top: 15px;
+  align-items: center;
+  justify-content: center;
+}
+
+#todo-input,#todo-date{
+  font-size: 15px;
+  padding: 10px 5px;
+  font-weight: bold;
+  background:rgb(184, 184, 239);
+  outline: none;
+  border: 1px solid rgb(155, 148, 148);
+}
+.btn-todo{
+   padding: 10px 0px;
+   cursor: pointer;
+   background:rgb(0, 0, 237);
+   color: white;
+   font-size: 15px;
+   border-radius:10px;
+  font-weight: bold;
+} 
+.btn-delete{
+  padding:10px 0px;
+  font-size: 15px;
+  background: chocolate;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+  font-weight: bold;
 }
