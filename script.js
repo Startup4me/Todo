@@ -31,3 +31,107 @@ taskDate.addEventListener('change',()=>{
     customDateInput.classList.add('hidden');
   }
 });
+
+//Update dropdown text when custom date is selected
+customDateInput.addEventListener('input',()=>{
+  const selectedDate = customDateInput.value;
+  //YYYY-MM-DD
+  if(selectedDate){
+    const formattedDate= new Date(selectedDate).toDateString();
+    // console.log(formattedDate);
+    taskDate.querySelector('option[value="custom"]').textContent=`📆 ${formattedDate}`;
+  }else{
+    taskDate.querySelector('option=="custom"').textContent="📆 custom";
+ }
+});
+//Get weekend date helper
+//getWeekendDate();
+function getWeekendDate(){
+  const now=new Date();
+  const day=now.getDay();
+  //console.log(now.getDate());
+  if(day === 6) now.setDate(now.getDate()+1);
+  else now.setDate(now.getDate()+(6-day));
+  return now.toISOString().split('T')[0];
+}
+
+
+//Add task
+function addTask(e){
+  e.preventDefault();
+
+  const title =document.getElementById('task-title').value.trim();
+  const desc =document.getElementById('task-desc').value.trim();
+  const dateChoice =taskDate.value;
+  const priority= document.getElementById('task-priority').value;
+
+  let finalDate;
+  if(dateChoice === 'today') finalDate ='Today';
+  else if (dateChoice === 'tomorrow') {
+    const tmr=new Date();
+    tmr.setDate(tmr.getDate()+1);
+    finalDate =tmr.toDateString();
+  }else if(dateChoice === 'weekend'){
+    finalDate= new Date(getWeekendDate()).toDateString();
+  }else{
+    finalDate=new Date(customDateInput.value).toDateString();
+    // console.log("Hi");
+    // console.log(new Date(customDateInput.value).toDateString());
+  }
+  //Create a task card
+  const taskCard =document.createElement('div');
+  taskCard.className='task-card';
+  
+  const taskHeader =document.createElement('div');
+  taskHeader.className='task-header';
+
+  const checkbox=document.createElement('input');
+  checkbox.type='checkbox';
+
+  const taskTitle=document.createElement('span');
+  taskTitle.className='task-title';
+  taskTitle.textContent=title;
+
+  taskHeader.appendChild(checkbox);
+  taskHeader.appendChild(taskTitle);
+
+  const taskDesc =document.createElement('div');
+  taskDesc.className='task-desc';
+  taskDesc.textContent=desc
+ 
+  const taskFooter = document.createElement('div');
+  taskFooter.className='task-footer';
+
+  const dateEl = document.createElement('span');
+  dateEl.textContent = finalDate;
+
+  const flag= document.createElement('span');
+  flag.classList.add('flag');
+  if(priority==='low') flag.classList.add('priority-low');
+  if(priority==='medium') flag.classList.add('priority-medium');
+    if(priority==='high') flag.classList.add('priority-high');
+      if(priority==='urgent') flag.classList.add('priority-urgent');
+      flag.textContent='⚑'
+
+  
+  taskFooter.appendChild(dateEl);
+  taskFooter.appendChild(flag);
+
+  taskCard.appendChild(taskHeader);
+  if(desc) taskCard.appendChild(taskDesc);
+  taskCard.appendChild(taskFooter);
+
+  document.querySelector('.todo-container').appendChild(taskCard);
+
+  //Checkbox animation
+  checkbox.addEventListener('change',()=>{
+    if(checkbox.checked){
+      taskCard.classList.add('slide-out');
+      setTimeout(()=> taskCard.remove(),300)
+    }
+  });
+
+  collapseForm();
+
+
+}  
