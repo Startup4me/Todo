@@ -80,7 +80,7 @@ function addTask(e){
   }
   //Create a task card
   const taskCard =document.createElement('div');
-  taskCard.className='task-card';
+  taskCard.className='task-card hide';
   
   const taskHeader =document.createElement('div');
   taskHeader.className='task-header';
@@ -123,15 +123,36 @@ function addTask(e){
 
   document.querySelector('.todo-container').appendChild(taskCard);
 
+  setTimeout(()=>{
+    taskCard.classList.remove('hide');
+    taskCard.classList.add('slide-in');
+  },10)
+
   //Checkbox animation
   checkbox.addEventListener('change',()=>{
     if(checkbox.checked){
       taskCard.classList.add('slide-out');
-      setTimeout(()=> taskCard.remove(),300)
+      setTimeout(()=> taskCard.remove(),400)//extra 100ms buffer
     }
   });
 
   collapseForm();
 
 
-}  
+} 
+
+/*DEMO 🎈🎈🎈🎈🎈
+window.addEventListener("DOMContentLoaded",()=>{
+  document.querySelector(".todo-container").innerHTML=`    <div class="task-card">
+      <div class="task-header">
+        <input type="checkbox">
+        <span class="task-title">Sample Task</span>
+      </div>
+      <div class="task-desc">Description for previewing the design of the card.</div>
+      <div class="task-footer">
+        <span>📅 Today</span>
+        <span class="flag priority-medium">⚑</span>
+      </div>
+    </div>
+  `;
+})*/
