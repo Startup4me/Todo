@@ -16,7 +16,46 @@ body{
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.8);
   padding: 20px;
   animation: fadeIn 0.6s ease;
+
+  max-height: 600px;  /* Limit container height */
+  overflow-x: hidden;
+  overflow-y: auto; /* scroll when contents exceeds max-height */
+  scroll-behavior: smooth;/* Smooth scrolling effect */
+  position: relative;  
+} 
+/* Optional: style the scrollbar for Webkit browsers (Chrome, Edge, Safari) */
+.todo-app::-webkit-scrollbar {
+  width: 8px;
+
 }
+.todo-app::-webkit-scrollbar-track {
+  background: transparent;  /* Track invisible or subtle */ }
+
+.todo-app::-webkit-scrollbar-thumb {
+  background-color: rgba(118, 75, 162, 0.5); /* #764ba2 semi-transparent */
+  border-radius: 999px;       /* capsule shape */
+  min-height: 50px;           /* fixed thumb height */
+  border: 2px solid transparent; /* ensures thumb is fully inside track */
+
+  transition: background-color 0.3s, opacity 0.3s;
+  opacity: 0.5;
+}
+
+.todo-app:hover::-webkit-scrollbar-thumb {
+  background-color: rgba(118, 75, 162, 1); /* fully visible on hover */
+  opacity: 1;
+}
+/* Firefox fallback */
+.todo-app {
+
+  scrollbar-color: rgba(118, 75, 162, 0.5) transparent;
+}
+
+.todo-app:hover {
+  scrollbar-color: rgba(118, 75, 162, 1) transparent;
+}
+
+
 
 h2{
   text-align: center;
@@ -102,8 +141,9 @@ h2{
   display: flex;
   flex-direction: column;
   gap: 12px;
-}
 
+}
+ 
 /* Hide by default */
 .hidden{ display: none;}
 
@@ -116,7 +156,7 @@ h2{
   flex-direction: column;
   gap: 6px;
    position: relative; /*❓🙋🏻‍♂️⁉❔ */
-   transition: transform 0.3s ease, opacity 0.3s ease;/**/
+   transition: transform 0.4s ease, opacity 0.4s ease;/**/
 }
 
 .task-header{
@@ -156,8 +196,6 @@ h2{
   to {opacity: 1; transform: translateY(0); }
 }
 
-.slide-out{ transform: translateX(100%);opacity:0;}
-
 /*Hide for right to left card when add*/
 .hide{
   transform: translateX(100%);
@@ -169,3 +207,9 @@ h2{
   transform: translateX(0);
   opacity: 1;
 }
+.slide-out{
+   transform: translateX(100%);
+   opacity:0;
+   transition-duration: 0.8s;/* slower speed here */
+  }  
+ 

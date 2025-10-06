@@ -126,13 +126,16 @@ function addTask(e){
   setTimeout(()=>{
     taskCard.classList.remove('hide');
     taskCard.classList.add('slide-in');
-  },10)
-
+  },10) 
+ 
   //Checkbox animation
   checkbox.addEventListener('change',()=>{
     if(checkbox.checked){
+        // remove classes that would override the slide-out rule
+    taskCard.classList.remove('slide-in');
+  
       taskCard.classList.add('slide-out');
-      setTimeout(()=> taskCard.remove(),400)//extra 100ms buffer
+      setTimeout(()=> taskCard.remove(),450)//extra 100ms buffer
     }
   });
 
