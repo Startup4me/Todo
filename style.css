@@ -17,45 +17,10 @@ body{
   padding: 20px;
   animation: fadeIn 0.6s ease;
 
-  max-height: 600px;  /* Limit container height */
   overflow-x: hidden;
   overflow-y: auto; /* scroll when contents exceeds max-height */
-  scroll-behavior: smooth;/* Smooth scrolling effect */
-  position: relative;  
+
 } 
-/* Optional: style the scrollbar for Webkit browsers (Chrome, Edge, Safari) */
-.todo-app::-webkit-scrollbar {
-  width: 8px;
-
-}
-.todo-app::-webkit-scrollbar-track {
-  background: transparent;  /* Track invisible or subtle */ }
-
-.todo-app::-webkit-scrollbar-thumb {
-  background-color: rgba(118, 75, 162, 0.5); /* #764ba2 semi-transparent */
-  border-radius: 999px;       /* capsule shape */
-  min-height: 50px;           /* fixed thumb height */
-  border: 2px solid transparent; /* ensures thumb is fully inside track */
-
-  transition: background-color 0.3s, opacity 0.3s;
-  opacity: 0.5;
-}
-
-.todo-app:hover::-webkit-scrollbar-thumb {
-  background-color: rgba(118, 75, 162, 1); /* fully visible on hover */
-  opacity: 1;
-}
-/* Firefox fallback */
-.todo-app {
-
-  scrollbar-color: rgba(118, 75, 162, 0.5) transparent;
-}
-
-.todo-app:hover {
-  scrollbar-color: rgba(118, 75, 162, 1) transparent;
-}
-
-
 
 h2{
   text-align: center;
@@ -84,16 +49,46 @@ h2{
   margin-bottom: 15px;
   animation: fadeIn 0.3s ease;
 }
-.task-form input,
-.task-form textarea,
+.task-form input[type="text"],
+.task-form textarea{
+border: none;
+outline:none;
+font-size: 16px;
+width: 100%;
+background: transparent;
+padding: 8px 0;
+border-bottom: 1px solid #ddd;
+transition: border-color 0.2s ease;
+resize: none;
+caret-color: #4a63d7;
+}
+.task-form input[type="text"]:focus,
+  .task-form textarea:focus {
+    border-color: #4a63d7; /* Todoist red */
+  }
+
+#task-title{
+ font-weight: bold;
+ font-size: 20px;
+}
+.task-form textarea {
+  resize: none;
+  height: 40px;
+}
 .task-form select{
-  
+  width: 100%;
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 8px;
   font-size: 14px;
 }
 
+  /* Date & Priority container */
+  .inline-selects {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+  }
 /* Custom date picker styling */
 #custom-date{
   border: 2px soid #667eea;
@@ -111,10 +106,7 @@ h2{
   border-color: #4a63d7;
   box-shadow:  0 0 5px #667eea;
 }
-.task-form textarea {
-  resize: none;
-  height: 40px;
-}
+
 .form-actions{
   display: flex;
   justify-content: flex-end;
@@ -185,7 +177,7 @@ h2{
 
 /* Priority Flags*/
 .flag{ font-size: 18px;}
-.priority-low{color: gray;}
+.priority-low{color: #4CAF50;}
 .priority-medium{color: blue;}
 .priority-high{color: orange;}
 .priority-urgent {color: red;}

@@ -19,14 +19,16 @@
   <input id="task-title"  type="text"
   placeholder="Task title" required>
   <textarea  id="task-desc" placeholder="Description"></textarea>
-
+  
+  <div class="inline-selects">
   <select id="task-date"required>
     <option value="today">📅 Today</option>
     <option value="tomorrow">🌅 Tomorrow</option>
     <option value="weekend">🛌 Weekend</option>
     <option value="custom">📆 Custom</option>
   </select>
-
+   
+ 
   <input id="custom-date" type="date" class="hidden" min="">
  <select  id="task-priority" required>
    <option value="low">⚪ Low</option>
@@ -34,7 +36,7 @@
     <option value="high" >🟠 High</option>
     <option value="urgent">🔴 Urgent</option>
  </select>
-
+</div>
  <div class="form-actions">
   <button type="button" class="btn btn-cancel" onclick="collapseForm()">Cancel</button>
   <button type="submit" class="btn btn-add">Add Task</button>
