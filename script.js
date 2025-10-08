@@ -2,6 +2,7 @@ const form =document.querySelector('.task-form');
 const placeholder =document.querySelector('.placeholder');
 const taskDate= document.getElementById('task-date');
 const customDateInput= document.getElementById('custom-date');
+const Title=document.getElementById("task-title");
 
 //min date =today
 const today =new Date().toISOString().split('T')[0];
@@ -12,7 +13,7 @@ customDateInput.min=today;
 function expandForm(){
   placeholder.style.display='none';
   form.style.display='flex';
-  document.getElementById('task-title').focus();
+ Title.focus();
 } 
 function collapseForm(){
   form.reset();
@@ -21,6 +22,9 @@ function collapseForm(){
   // console.log(taskDate);
   placeholder.style.display='block';
   form.style.display='none';
+
+  //Manually trigger the input event to update button states (removes active from btn)
+  Title.dispatchEvent(new Event('input'));
 }
 // Show custom date input when "Custom" is selected
 taskDate.addEventListener('change',()=>{
@@ -59,8 +63,8 @@ function getWeekendDate(){
 //Add task
 function addTask(e){
   e.preventDefault();
-
-  const title =document.getElementById('task-title').value.trim();
+  
+  const title =Title.value.trim();
   const desc =document.getElementById('task-desc').value.trim();
   const dateChoice =taskDate.value;
   const priority= document.getElementById('task-priority').value;
@@ -78,6 +82,8 @@ function addTask(e){
     // console.log("Hi");
     // console.log(new Date(customDateInput.value).toDateString());
   }
+
+ 
   //Create a task card
   const taskCard =document.createElement('div');
   taskCard.className='task-card hide';
@@ -140,9 +146,20 @@ function addTask(e){
   });
 
   collapseForm();
-
-
 } 
+
+ const addBtnIcon =document.getElementById('add-btn-icon');
+ const addBtnText=document.getElementById('add-btn');
+
+ Title.addEventListener('input',() =>{
+  if(Title.value.trim() !==''){
+    addBtnIcon.classList.add('active');
+    addBtnText.classList.add('active');
+  }else{
+    addBtnIcon.classList.remove('active');
+     addBtnText.classList.remove('active');
+  }
+ });
 
 /*DEMO 🎈🎈🎈🎈🎈
 window.addEventListener("DOMContentLoaded",()=>{

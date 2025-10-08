@@ -31,7 +31,7 @@ h2{
 /* Collapsed placeholder*/
 .placeholder{
   padding: 12px;
-  border: 1px solid #ddd;
+  border: 1px solid #949090;
    border-radius:12px;
   /* border-radius: 0px 12px 0px 12px; */
   cursor:text ;
@@ -46,6 +46,9 @@ h2{
   display: none;
   flex-direction: column;
   gap: 10px;
+  border-radius: 12px;
+  padding: 20px 20px 10px 20px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.8);
   margin-bottom: 15px;
   animation: fadeIn 0.3s ease;
 }
@@ -106,11 +109,18 @@ caret-color: #4a63d7;
   border-color: #4a63d7;
   box-shadow:  0 0 5px #667eea;
 }
+ .form-divider{
+ border-bottom: 1px solid grey;
+margin: 5px -20px 0px -20px;
+width: calc(100% +40px);
 
+  
+ }
 .form-actions{
   display: flex;
   justify-content: flex-end;
   gap: 10px;
+  margin: 8px 0;
 }
 .btn{
   padding: 8px 14px;
@@ -123,11 +133,45 @@ caret-color: #4a63d7;
   background: #eee;
   color: #333;
 }
+.btn-cancel:hover{
+  background: #9c9898;
+}
 .btn-add{
-  background: #667eea;
-  color: #fff;
+  background: #aaa;
+  color: #fff;  
+ 
+}
+.btn-add:hover{
+  background:#3857e0; 
+}
+.btn-add.active{
+  background: #4a63d7; /* Blue when typing */
+
 }
 
+
+/*----- Default Desktop -----*/
+.text-btn{
+  display: inline-block;
+}
+.icon-btn{
+  display: none;
+}
+
+/* Icon button style (for phones) */
+.btn-cancel.icon-btn{
+  color: #aaa;
+  font-size: 22px;
+}
+.btn-add.icon-btn{
+  color: #aaa;
+  background:#eee ;
+  font-size: 24px;
+}
+.btn-add.icon-btn.active{
+  background-color: #4a67e8;
+  color: #ffffff;
+}
 /* Task list */
 .todo-container{
   display: flex;
@@ -204,4 +248,18 @@ caret-color: #4a63d7;
    opacity:0;
    transition-duration: 0.8s;/* slower speed here */
   }  
- 
+ /* Responsive adjustment */
+@media(max-width:600px){
+
+   /* Switch buttons */
+  .text-btn { display: none; }
+  .icon-btn { display: inline-block; }
+  
+  .todo-app{
+    width: 90%;
+    padding: 15px;
+  }
+ .btn-cancel, .btn-add {
+    font-size: 24px;
+  }
+}

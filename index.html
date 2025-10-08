@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
   <title>Todo App</title>
   <link rel="stylesheet" href="style.css">
 </head>
@@ -37,9 +37,16 @@
     <option value="urgent">🔴 Urgent</option>
  </select>
 </div>
+  <!--Divider line-->
+<div class="form-divider"></div>
+
  <div class="form-actions">
-  <button type="button" class="btn btn-cancel" onclick="collapseForm()">Cancel</button>
-  <button type="submit" class="btn btn-add">Add Task</button>
+  <!--Cancel Buttons-->
+  <button type="button" class="btn btn-cancel text-btn" onclick="collapseForm()">Cancel</button>
+  <button type="button" class="btn btn-cancel icon-btn"onclick="collapseForm()">✖</button>
+ <!--Add Task Buttons-->
+  <button type="submit" class="btn btn-add text-btn" id="add-btn">Add Task</button>
+  <button type="submit" class="btn btn-add icon-btn" id="add-btn-icon">➤</button>
  </div>
  </form>
 
