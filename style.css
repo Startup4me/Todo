@@ -9,14 +9,16 @@ body{
   color: #333;
 }
 
-.todo-app{
+.todo-app{  
+  position: relative;
   background: #fff;
   width: 400px;
   border-radius: 16px;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.8);
   padding: 20px;
   animation: fadeIn 0.6s ease;
-
+  
+  
   overflow-x: hidden;
   overflow-y: auto; /* scroll when contents exceeds max-height */
 
@@ -249,18 +251,75 @@ width: calc(100% +40px);
    opacity:0;
    transition-duration: 0.8s;/* slower speed here */
   }  
+
+  /*Floating Action Button (FAB)*/
+  .fab{
+  position: fixed;
+  top:85vh; /* stick near the bottom of .todo-app */
+  right: 20vh;
+    width: 60px;
+    height: 60px;
+    border-radius:50%;
+    background: linear-gradient(135deg, #6a5acd, #7b68ee);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 36px;
+    font-weight: bold;
+    box-shadow: 0 6px 20px rgba(106, 90, 205, 0.4);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    animation: float 3s ease-in-out infinite;
+  }
+
+  /* Hover effect */
+  .fab:hover{
+    transform: scale(1.1);
+    box-shadow: 0 10px 30px rgba(46, 18, 230, 0.6);
+  }
+  /* Floating up-down animation*/
+  /* @keyframes float {
+    0%,100%{transform: translateY(0);}
+    50%{transform: translateY(-6px); }
+  } */
+  /* Plus sign small bounce*/
+  .plus{
+  width: 36px;
+  height: 36px;
+  transform-origin: 50% 50%;
+  transition: transform 0.3s ease;
+  }
+  .fab:hover .plus{
+    transform: rotate(90deg);
+  }
+  .fab.clicked{
+    animation: pulse 0.3s ease;
+  }
+
+  @keyframes pulse{
+    0%{transform: scale(1);}
+    50%{transform: scale(0.9);}
+    100%{transform: scale(1);}
+  }
  /* Responsive adjustment */
 @media(max-width:600px){
 
    /* Switch buttons */
   .text-btn { display: none; }
   .icon-btn { display: inline-block; }
-  
-  .todo-app{
+    .fab {
+    position: fixed; /* normal fixed for mobile */
+    bottom: 5vh;
+    right: 5vh;
+  }
+  .todo-app{ 
     width: 90%;
     padding: 15px;
   }
  .btn-cancel, .btn-add {
     font-size: 24px;
   }
+ 
 }
+

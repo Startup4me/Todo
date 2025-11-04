@@ -1,5 +1,6 @@
 const form =document.querySelector('.task-form');
 const placeholder =document.querySelector('.placeholder');
+const fab =document.getElementById('addBtn');
 const taskDate= document.getElementById('task-date');
 const customDateInput= document.getElementById('custom-date');
 const Title=document.getElementById("task-title");
@@ -160,7 +161,9 @@ function addTask(e){
      addBtnText.classList.remove('active');
   }
  });
-
+//Clicking the floating button also opens the form
+ fab.addEventListener('click',expandForm);
+ 
 /*DEMO 🎈🎈🎈🎈🎈
 window.addEventListener("DOMContentLoaded",()=>{
   document.querySelector(".todo-container").innerHTML=`    <div class="task-card">
