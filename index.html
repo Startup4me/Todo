@@ -8,8 +8,14 @@
 </head>
 <body>
 <div class="todo-app">
-  <h2>My tasks</h2>
+ <div class="top-bar">
+  <div class="left">
+    <span class="tick">✔</span>
+    <h2>My tasks</h2>  
+  </div>
+     <button id="showCompletedBtn" class="completed-btn">✅ Completed ▼</button>
 
+ </div>
    <!--Collapsed placeholder-->
    <div class="placeholder" onclick="expandForm()">➕ Add a task...</div>
 
@@ -51,7 +57,7 @@
  </form>
 
   <div class="todo-container"></div>
-
+ <div class="completed-container hidden "></div>
   <!-- Floating Add Button -->
 <div class="fab" id="addBtn">
     <svg class="plus" viewBox="0 0 24 24">

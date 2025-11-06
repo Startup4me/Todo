@@ -1,10 +1,15 @@
+// =====================
+// GLOBAL SELECTORS
+// =====================
+
 const form =document.querySelector('.task-form');
 const placeholder =document.querySelector('.placeholder');
 const fab =document.getElementById('addBtn');
 const taskDate= document.getElementById('task-date');
 const customDateInput= document.getElementById('custom-date');
 const Title=document.getElementById("task-title");
-
+const taskDescInput=document.getElementById("task-desc");
+const taskPriority = document.getElementById("task-priority");
 //min date =today
 const today =new Date().toISOString().split('T')[0];
 customDateInput.min=today;
@@ -145,7 +150,8 @@ function addTask(e){
       setTimeout(()=> taskCard.remove(),450)//extra 100ms buffer
     }
   });
-
+   
+  // saveTasks();
   collapseForm();
 } 
 
@@ -179,3 +185,40 @@ window.addEventListener("DOMContentLoaded",()=>{
     </div>
   `;
 })*/
+// ============
+// LOCAL STORAGE HANDLER
+// ============ 
+
+function saveTasks(){ 
+  const tasks = [];
+
+document.querySelectorAll('.todo-container .task-card').forEach(card=>{
+  const title = card.querySelector('.task-title').textContent;
+  const desc = card.querySelector('.task-desc')?.textContent || '';
+  const date = card.querySelector('.task-footer span:not(.flag)').textContent;
+  const priorityClass =card.querySelector('.flag').classList[1];
+  const priority = priorityClass.replace('priority-','');
+  tasks.push({title,desc,date,priority, complete: false});
+});
+
+const completed =[];
+document.querySelectorAll('.completed-container .task-card').forEach(card=>{
+  const title = card.querySelector('.task-title').textContent;
+  const desc = card.querySelector('.task-desc')?.textContent || '';
+  const date = card.querySelector('.task-footer span:not(.flag)').textContent;
+  const priorityClass = card.querySelector('.flag').classList[1];
+  const priority = priorityClass.replace('priority-', '');
+    completed.push({ title, desc, date, priority, completed: true });
+});
+
+localStorage.setItem('tasks', JSON.stringify(tasks));
+localStorage.setItem('completedTasks',JSON.stringify(completed));
+
+}
+
+function loadTasks(){
+  const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+  const completed = JSON.parse(localStorage.getItem('completedTasks')) || [];
+  tasks.forEach(t => renderTask(t));
+  completed.forEach(t => renderTask(t, true));
+} 
