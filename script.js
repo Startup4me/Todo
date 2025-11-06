@@ -151,7 +151,7 @@ function addTask(e){
     }
   });
    
-  // saveTasks();
+  saveTasks();
   collapseForm();
 } 
 
