@@ -338,17 +338,18 @@ width: calc(100% +40px);
   }
 
 .completed-container{
-  margin-top: 20px;
+  margin-top: 20px; 
   background:#7ba6fa ;
   border-radius: 10px;
-  display: none;
+  flex-direction: column;
+  gap: 12px;
   }
 
   .completed-container.show{
-    display: block;
+    display: flex;
   }
  /* Responsive adjustment */
-@media(max-width:600px){
+@media(max-width:480px){
 
    /* Switch buttons */
   .text-btn { display: none; }

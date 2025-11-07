@@ -64,14 +64,14 @@ function getWeekendDate(){
   else now.setDate(now.getDate()+(6-day));
   return now.toISOString().split('T')[0];
 }
-
+ 
 
 //Add task
 function addTask(e){
   e.preventDefault();
   
   const title =Title.value.trim();
-  const desc =document.getElementById('task-desc').value.trim();
+  const desc= taskDescInput.value.trim();
   const dateChoice =taskDate.value;
   const priority= document.getElementById('task-priority').value;
 
@@ -91,31 +91,31 @@ function addTask(e){
 
  
   //Create a task card
-  const taskCard =document.createElement('div');
-  taskCard.className='task-card hide';
+  // const taskCard =document.createElement('div');
+  // taskCard.className='task-card hide';
   
-  const taskHeader =document.createElement('div');
-  taskHeader.className='task-header';
+  // const taskHeader =document.createElement('div');
+  // taskHeader.className='task-header';
 
-  const checkbox=document.createElement('input');
-  checkbox.type='checkbox';
+  // const checkbox=document.createElement('input');
+  // checkbox.type='checkbox';
 
-  const taskTitle=document.createElement('span');
-  taskTitle.className='task-title';
-  taskTitle.textContent=title;
+  // const taskTitle=document.createElement('span');
+  // taskTitle.className='task-title';
+  // taskTitle.textContent=title;
 
-  taskHeader.appendChild(checkbox);
-  taskHeader.appendChild(taskTitle);
+  // taskHeader.appendChild(checkbox);
+  // taskHeader.appendChild(taskTitle);
 
-  const taskDesc =document.createElement('div');
-  taskDesc.className='task-desc';
-  taskDesc.textContent=desc
+  // const taskDesc =document.createElement('div');
+  // taskDesc.className='task-desc';
+  // taskDesc.textContent=desc
  
-  const taskFooter = document.createElement('div');
-  taskFooter.className='task-footer';
+  // const taskFooter = document.createElement('div');
+  // taskFooter.className='task-footer';
 
-  const dateEl = document.createElement('span');
-  dateEl.textContent = finalDate;
+  // const dateEl = document.createElement('span');
+  // dateEl.textContent = finalDate;
 
   const flag= document.createElement('span');
   flag.classList.add('flag');
@@ -126,31 +126,34 @@ function addTask(e){
       flag.textContent='⚑'
 
   
-  taskFooter.appendChild(dateEl);
-  taskFooter.appendChild(flag);
+  // taskFooter.appendChild(dateEl);
+  // taskFooter.appendChild(flag);
 
-  taskCard.appendChild(taskHeader);
-  if(desc) taskCard.appendChild(taskDesc);
-  taskCard.appendChild(taskFooter);
+  // taskCard.appendChild(taskHeader);
+  // if(desc) taskCard.appendChild(taskDesc);
+  // taskCard.appendChild(taskFooter);
 
-  document.querySelector('.todo-container').appendChild(taskCard);
+  // document.querySelector('.todo-container').appendChild(taskCard);
 
-  setTimeout(()=>{
-    taskCard.classList.remove('hide');
-    taskCard.classList.add('slide-in');
-  },10) 
+//🌌🌌🌌🌌🌌
+  // setTimeout(()=>{
+  //   taskCard.classList.remove('hide');
+  //   taskCard.classList.add('slide-in');
+  // },10) 
  
-  //Checkbox animation
-  checkbox.addEventListener('change',()=>{
-    if(checkbox.checked){
-        // remove classes that would override the slide-out rule
-    taskCard.classList.remove('slide-in');
+  // //Checkbox animation
+  // checkbox.addEventListener('change',()=>{
+  //   if(checkbox.checked){
+  //       // remove classes that would override the slide-out rule
+  //   taskCard.classList.remove('slide-in');
   
-      taskCard.classList.add('slide-out');
-      setTimeout(()=> taskCard.remove(),450)//extra 100ms buffer
-    }
-  });
+  //     taskCard.classList.add('slide-out');
+  //     setTimeout(()=> taskCard.remove(),450)//extra 100ms buffer
+  //   }
+  // });
    
+  const newTask ={ title, desc, date: finalDate, priority, completed: false};
+  renderTask(newTask);
   saveTasks();
   collapseForm();
 } 
@@ -222,3 +225,80 @@ function loadTasks(){
   tasks.forEach(t => renderTask(t));
   completed.forEach(t => renderTask(t, true));
 } 
+// ====================
+// RENDER TASK FUNCTION
+// ====================
+function renderTask(task,isCompleted=false){
+  const container = isCompleted
+  ? document.querySelector('.completed-container')
+  :document.querySelector('.todo-container');
+
+  const taskCard =document.createElement('div');
+  taskCard.className ='task-card';
+
+  const taskHeader = document.createElement('div');
+  taskHeader.className ='task-header';
+
+  const checkbox =document.createElement('input');
+  checkbox.type = 'checkbox';
+  checkbox.checked = isCompleted;
+
+  const taskTitle =document.createElement('span');
+  taskTitle.className ='task-title';
+  taskTitle.textContent = task.title;
+
+  taskHeader.appendChild(checkbox);
+  taskHeader.appendChild(taskTitle);
+
+  const taskDesc = document.createElement('div');
+  taskDesc.className ='task-desc';
+  taskDesc.textContent = task.desc;
+
+  const taskFooter =document.createElement('div');
+  taskFooter.className = 'task-footer';
+
+  const dateEl = document.createElement('span');
+  dateEl.textContent = task.date;
+
+  const flag = document.createElement('span');
+  flag.classList.add('flag',`priority-${task.priority}`);
+  flag.textContent = '⚑';
+
+  taskFooter.appendChild(dateEl);
+  taskFooter.appendChild(flag);
+
+  taskCard.appendChild(taskHeader);
+  if(task.desc) taskCard.appendChild(taskDesc);
+  taskCard.appendChild(taskFooter);
+
+  container.appendChild(taskCard);
+
+  // Checkbox logic (move to completed)
+  checkbox.addEventListener('change',()=>{
+    if(checkbox.checked){
+      document.querySelector('.completed-container').appendChild(taskCard);
+    }else{
+      document.querySelector('.todo-container').appendChild(taskCard);  
+    }
+    saveTasks();
+  })
+}
+
+//====================
+// SHOW/HIDE COMPLETED
+//====================
+const showCompletedBtn = document.getElementById('showCompletedBtn');
+showCompletedBtn.addEventListener('click', ()=>{
+  const completedContainer =document.querySelector('.completed-container');
+  completedContainer.classList.toggle('show');
+   
+  // Change arrow direction  ▼ ↔ ▲
+  const isShow =completedContainer.classList.contains('show');
+ showCompletedBtn.textContent = isShow ?"✅ Completed ▲":"✅ Completed ▼"
+
+});
+
+// INIT APP
+window.addEventListener('DOMContentLoaded',()=>{
+  loadTasks();
+})
