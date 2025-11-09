@@ -338,7 +338,6 @@ width: calc(100% +40px);
   }
 
 .completed-container{
-  margin-top: 20px; 
   background:#7ba6fa ;
   border-radius: 10px;
   flex-direction: column;
