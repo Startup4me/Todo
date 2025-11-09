@@ -1,7 +1,7 @@
 // =====================
 // GLOBAL SELECTORS
 // =====================
-
+const todoContainer = document.querySelector('.todo-container');
 const form =document.querySelector('.task-form');
 const placeholder =document.querySelector('.placeholder');
 const fab =document.getElementById('addBtn');
@@ -277,6 +277,7 @@ function renderTask(task,isCompleted=false){
   checkbox.addEventListener('change',()=>{
     if(checkbox.checked){
       document.querySelector('.completed-container').appendChild(taskCard);
+      
     }else{
       document.querySelector('.todo-container').appendChild(taskCard);  
     }
@@ -288,17 +289,23 @@ function renderTask(task,isCompleted=false){
 // SHOW/HIDE COMPLETED
 //====================
 const showCompletedBtn = document.getElementById('showCompletedBtn');
-showCompletedBtn.addEventListener('click', ()=>{
+showCompletedBtn. addEventListener('click', ()=>{
   const completedContainer =document.querySelector('.completed-container');
   completedContainer.classList.toggle('show');
    
   // Change arrow direction  ▼ ↔ ▲
   const isShow =completedContainer.classList.contains('show');
- showCompletedBtn.textContent = isShow ?"✅ Completed ▲":"✅ Completed ▼"
-
+ 
+if(isShow){
+  showCompletedBtn.textContent="✅ Completed ▲";
+  todoContainer.classList.add('hidden');
+}else{
+  showCompletedBtn.textContent="✅ Completed ▼";
+   todoContainer.classList.remove('hidden');
+}
 });
 
 // INIT APP
 window.addEventListener('DOMContentLoaded',()=>{
   loadTasks();
-})
+})  
