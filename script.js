@@ -234,7 +234,7 @@ function renderTask(task,isCompleted=false){
   :document.querySelector('.todo-container');
 
   const taskCard =document.createElement('div');
-  taskCard.className ='task-card';
+  taskCard.className ='task-card hide'; // IMPORTANT: start hidden
 
   const taskHeader = document.createElement('div');
   taskHeader.className ='task-header';
@@ -271,18 +271,58 @@ function renderTask(task,isCompleted=false){
   if(task.desc) taskCard.appendChild(taskDesc);
   taskCard.appendChild(taskFooter);
 
+  // Append to container (still hidden)
   container.appendChild(taskCard);
+  // Force reflow then animate in
+  // (gives the browser a frame to apply the .hide state before we remove it)
+  requestAnimationFrame(() => {
+    // small delay to ensure CSS has applied .hide
+    setTimeout(() => {
+      taskCard.classList.remove('hide');
+      taskCard.classList.add('slide-in');
+      // remove the animation class after it finishes so future animations work
+      setTimeout(() => taskCard.classList.remove('slide-in'), 350); // match CSS duration
+    }, 10);
+  });
+    // Move card with exit/enter animation when checkbox toggled
+  checkbox.addEventListener('change', () => {
+    // target containers
+    const fromContainer = checkbox.checked
+      ? document.querySelector('.todo-container')
+      : document.querySelector('.completed-container');
+
+    const toContainer = checkbox.checked
+      ? document.querySelector('.completed-container')
+      : document.querySelector('.todo-container');
+
+    // play exit animation
+    taskCard.classList.remove('slide-in');
+    taskCard.classList.add('slide-out');
+
+    // after exit animation finishes, move and animate in
+    setTimeout(() => {
+      taskCard.classList.remove('slide-out');
+      toContainer.appendChild(taskCard);
+
+      // animate in
+      taskCard.classList.add('slide-in');
+      setTimeout(() => taskCard.classList.remove('slide-in'), 820); // match CSS duration
+
+      // persist changes
+      saveTasks(); 
+    }, 550); // match CSS exit duration (slightly less than or equal to CSS)
+  });
 
   // Checkbox logic (move to completed)
-  checkbox.addEventListener('change',()=>{
-    if(checkbox.checked){
-      document.querySelector('.completed-container').appendChild(taskCard);
+  // checkbox.addEventListener('change',()=>{
+  //   if(checkbox.checked){
+  //     document.querySelector('.completed-container').appendChild(taskCard);
       
-    }else{
-      document.querySelector('.todo-container').appendChild(taskCard);  
-    }
-    saveTasks();
-  })
+  //   }else{
+  //     document.querySelector('.todo-container').appendChild(taskCard);  
+  //   }
+  //   saveTasks();
+  // })
 }
 
 //====================
