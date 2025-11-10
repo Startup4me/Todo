@@ -378,6 +378,57 @@ width: calc(100% +40px);
   .completed-container.show{
     display: flex;
   }
+  /* Confirm Modal */
+  .confirm-overlay{
+    position: fixed;
+    top:0 ;left:0;
+    width: 100%;height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 100;
+  }
+
+  .confirm-overlay.show{
+    visibility: visible;
+    opacity: 1;
+  }
+  .confirm-box{
+    background: #fff;
+    border-radius: 14px;
+    padding: 22px;
+    width: 90%;
+    max-width: 320px;
+    text-align: center;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2) ;
+    animation: popIn 0.3s ease;
+  }
+  @keyframes popIn {
+    from { transform: scale(0.9);opacity: 0; }
+    to{ transform: scale(1);opacity: 1;}
+  }
+  .confirm-box h3{
+    margin: 0 0 10px;
+  }
+  .confirm-actions{
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .confirm-btn{
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    border:none;
+    cursor: pointer;
+  }
+  .confirm-yes{ background: #ef4444;color: white;}
+  .confirm-no{ background: #c7cad1; }
  /* Responsive adjustment */
 @media(max-width:480px){
 

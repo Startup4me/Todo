@@ -288,6 +288,53 @@ function renderTask(task,isCompleted=false){
  taskCard.appendChild(actions);
   // Append to container (still hidden)
   container.appendChild(taskCard);
+
+  //--- EDIT Button ---
+  editBtn.addEventListener('cick',()=>{
+  expandForm();
+  Title.value = task.title;
+  taskDescInput.value =task.desc;
+   taskDate.value = task.date;
+  taskPriority.value = task.priority;
+
+  const addBtn = document.getElementById('add-btn');
+  addBtn.textContent ='Save';
+
+  form.onsubmit = (e) => {
+    e.preventDefault();
+
+    task.title = Title.value.trim();
+    task.desc = taskDescInput.value.trim();
+   task.priority = taskPriority.value;
+   task.date = taskDate.value === 'custom' ? new 
+   Date(customDateInput.value).toDateString() :task.date;
+
+   taskTitle.textContent = task.title;
+   taskDesc.textContent = task.desc;
+   flag.className= `flag priority-${task.priority}`;
+   taskDate.textContent =task.date;
+   collapseForm();
+   addBtn.textContent ='Add Task';
+   saveTasks();
+   showToast('✅ Task updated successfully!');
+  };
+  });
+
+  // --- DELETE BUTTON ---
+    let cardToDelete = null;
+  let lastDeletedCard = null;
+  
+    const toast = document.getElementById('toast');
+  const confirmModal = document.getElementById('confirmModal');
+  document.addEventListener('click', (e) => {
+    if (e.target.classList.contains('delete-btn')) {
+      cardToDelete = e.target.closest('.task-card');
+      confirmModal.classList.add('show');
+    }
+
+    if (e.target.classList.contains('confirm-no')) {
+      confirmModal.classList.remove('show');
+    }});
   // Force reflow then animate in
   // (gives the browser a frame to apply the .hide state before we remove it)
   requestAnimationFrame(() => {
