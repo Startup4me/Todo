@@ -263,6 +263,35 @@ width: calc(100% +40px);
 .priority-high{color: orange;}
 .priority-urgent {color: red;}
 
+.task-actions {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  display: flex;
+  gap: 6px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+
+}
+.task-card:hover .task-actions{
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.task-btn{
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+  padding: 5px 8px;
+  font-size: 15px;
+  background: #fff;
+  box-shadow: -2px 2px 5px rgba(0,0,0,0.9);
+  transition: all 0.25s ease;
+}
+
+.edit-btn:hover{ background: #97c6f3;}
+.delete-btn:hover{ background: #f89c9c;}
 /*Animation*/
 @keyframes fadeIn{
   from {opacity: 0; transform: translateY(5px);}

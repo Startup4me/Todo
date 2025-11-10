@@ -270,7 +270,22 @@ function renderTask(task,isCompleted=false){
   taskCard.appendChild(taskHeader);
   if(task.desc) taskCard.appendChild(taskDesc);
   taskCard.appendChild(taskFooter);
+  // --- Edit & Delete button ---
+ const actions = document.createElement('div');
+ actions.className = 'task-actions';
 
+ const editBtn = document.createElement('button');
+ editBtn.className = 'task-btn edit-btn';
+ editBtn.textContent = '✏️';  
+
+ const delBtn =document.createElement('button');
+ delBtn.className = 'task-btn delete-btn';
+ delBtn.textContent ='🗑️';
+
+ actions.appendChild(editBtn);
+ actions.appendChild(delBtn);
+
+ taskCard.appendChild(actions);
   // Append to container (still hidden)
   container.appendChild(taskCard);
   // Force reflow then animate in
