@@ -27,7 +27,7 @@ function collapseForm(){
   taskDate.querySelector("option[value='custom']").textContent="📆 Custom";
   // console.log(taskDate);
   placeholder.style.display='block';
-  form.style.display='none';
+  form.style.display='none';  
 
   //Manually trigger the input event to update button states (removes active from btn)
   Title.dispatchEvent(new Event('input'));
@@ -51,7 +51,7 @@ customDateInput.addEventListener('input',()=>{
     // console.log(formattedDate);
     taskDate.querySelector('option[value="custom"]').textContent=`📆 ${formattedDate}`;
   }else{
-    taskDate.querySelector('option=="custom"').textContent="📆 custom";
+    taskDate.querySelector('option[value ="custom"]').textContent="📆 custom";
  }
 });
 //Get weekend date helper
@@ -85,38 +85,9 @@ function addTask(e){
     finalDate= new Date(getWeekendDate()).toDateString();
   }else{
     finalDate=new Date(customDateInput.value).toDateString();
-    // console.log("Hi");
-    // console.log(new Date(customDateInput.value).toDateString());
+   
   }
-
  
-  //Create a task card
-  // const taskCard =document.createElement('div');
-  // taskCard.className='task-card hide';
-  
-  // const taskHeader =document.createElement('div');
-  // taskHeader.className='task-header';
-
-  // const checkbox=document.createElement('input');
-  // checkbox.type='checkbox';
-
-  // const taskTitle=document.createElement('span');
-  // taskTitle.className='task-title';
-  // taskTitle.textContent=title;
-
-  // taskHeader.appendChild(checkbox);
-  // taskHeader.appendChild(taskTitle);
-
-  // const taskDesc =document.createElement('div');
-  // taskDesc.className='task-desc';
-  // taskDesc.textContent=desc
- 
-  // const taskFooter = document.createElement('div');
-  // taskFooter.className='task-footer';
-
-  // const dateEl = document.createElement('span');
-  // dateEl.textContent = finalDate;
-
   const flag= document.createElement('span');
   flag.classList.add('flag');
   if(priority==='low') flag.classList.add('priority-low');
@@ -126,32 +97,6 @@ function addTask(e){
       flag.textContent='⚑'
 
   
-  // taskFooter.appendChild(dateEl);
-  // taskFooter.appendChild(flag);
-
-  // taskCard.appendChild(taskHeader);
-  // if(desc) taskCard.appendChild(taskDesc);
-  // taskCard.appendChild(taskFooter);
-
-  // document.querySelector('.todo-container').appendChild(taskCard);
-
-//🌌🌌🌌🌌🌌
-  // setTimeout(()=>{
-  //   taskCard.classList.remove('hide');
-  //   taskCard.classList.add('slide-in');
-  // },10) 
- 
-  // //Checkbox animation
-  // checkbox.addEventListener('change',()=>{
-  //   if(checkbox.checked){
-  //       // remove classes that would override the slide-out rule
-  //   taskCard.classList.remove('slide-in');
-  
-  //     taskCard.classList.add('slide-out');
-  //     setTimeout(()=> taskCard.remove(),450)//extra 100ms buffer
-  //   }
-  // });
-   
   const newTask ={ title, desc, date: finalDate, priority, completed: false};
   renderTask(newTask);
   saveTasks();
@@ -199,6 +144,10 @@ document.querySelectorAll('.todo-container .task-card').forEach(card=>{
   const title = card.querySelector('.task-title').textContent;
   const desc = card.querySelector('.task-desc')?.textContent || '';
   const date = card.querySelector('.task-footer span:not(.flag)').textContent;
+
+  date =date.replace("📆","").trim();// Remove emoji before saving
+  
+
   const priorityClass =card.querySelector('.flag').classList[1];
   const priority = priorityClass.replace('priority-','');
   tasks.push({title,desc,date,priority, complete: false});
@@ -209,6 +158,9 @@ document.querySelectorAll('.completed-container .task-card').forEach(card=>{
   const title = card.querySelector('.task-title').textContent;
   const desc = card.querySelector('.task-desc')?.textContent || '';
   const date = card.querySelector('.task-footer span:not(.flag)').textContent;
+
+  date = date.replace("📆","").trim();// Remove emoji before saving
+  
   const priorityClass = card.querySelector('.flag').classList[1];
   const priority = priorityClass.replace('priority-', '');
     completed.push({ title, desc, date, priority, completed: true });
@@ -250,7 +202,7 @@ function renderTask(task,isCompleted=false){
   taskHeader.appendChild(checkbox);
   taskHeader.appendChild(taskTitle);
 
-  const taskDesc = document.createElement('div');
+  let taskDesc = document.createElement('div');
   taskDesc.className ='task-desc';
   taskDesc.textContent = task.desc;
 
@@ -258,7 +210,7 @@ function renderTask(task,isCompleted=false){
   taskFooter.className = 'task-footer';
 
   const dateEl = document.createElement('span');
-  dateEl.textContent = task.date;
+  dateEl.textContent = `📆 ${task.date}`;
 
   const flag = document.createElement('span');
   flag.classList.add('flag',`priority-${task.priority}`);
@@ -290,11 +242,29 @@ function renderTask(task,isCompleted=false){
   container.appendChild(taskCard);
 
   //--- EDIT Button ---
-  editBtn.addEventListener('cick',()=>{
+  editBtn.addEventListener('click',()=>{
   expandForm();
+
+ taskDesc = taskCard.querySelector(".task-desc");
   Title.value = task.title;
   taskDescInput.value =task.desc;
-   taskDate.value = task.date;
+   // Restore correct date option
+if (task.date === "Today") {
+    taskDate.value = "today";
+} 
+else if (task.date === new Date(Date.now() + 86400000).toDateString()) {
+    taskDate.value = "tomorrow";
+} 
+else if (task.date === new Date(getWeekendDate()).toDateString()) {
+    taskDate.value = "weekend";
+} 
+else { 
+    // It's a custom date
+    taskDate.value = "custom";
+    customDateInput.classList.remove('hidden');
+    customDateInput.value = new Date(task.date).toISOString().split("T")[0];
+} 
+
   taskPriority.value = task.priority;
 
   const addBtn = document.getElementById('add-btn');
@@ -303,27 +273,53 @@ function renderTask(task,isCompleted=false){
   form.onsubmit = (e) => {
     e.preventDefault();
 
-    task.title = Title.value.trim();
-    task.desc = taskDescInput.value.trim();
-   task.priority = taskPriority.value;
-   task.date = taskDate.value === 'custom' ? new 
-   Date(customDateInput.value).toDateString() :task.date;
+    task.title = Title.value.trim(); 
+     task.desc = taskDescInput.value.trim();
+    if(task.desc){
+   
+      if(taskDesc){
+        taskDesc.textContent =task.desc; 
+      }else{
+        const newDesc = document.createElement('div');
 
+    dateEl.textContent = `📆 ${task.date}`;
+        newDesc.className ='task-desc';
+        newDesc.textContent =task.desc;
+        taskCard.insertBefore(newDesc,taskFooter);
+        taskDesc =newDesc;// update reference
+      }
+    }else{
+      // If description is empty after edit -> remove element (optional) 
+      if(taskDesc) taskDesc.remove();
+    }
+
+   task.priority = taskPriority.value;
+     // update date properly
+  if (taskDate.value === "custom") {
+    task.date = new Date(customDateInput.value).toDateString();
+  } else if (taskDate.value === "today") {
+    task.date = "Today";
+  } else if (taskDate.value === "tomorrow") {
+    task.date = new Date(Date.now() + 86400000).toDateString();
+  } else if (taskDate.value === "weekend") {
+    task.date = new Date(getWeekendDate()).toDateString();
+  }
    taskTitle.textContent = task.title;
-   taskDesc.textContent = task.desc;
    flag.className= `flag priority-${task.priority}`;
-   taskDate.textContent =task.date;
-   collapseForm();
+   dateEl.textContent =task.date; 
+
+   collapseForm(); 
    addBtn.textContent ='Add Task';
-   saveTasks();
-   showToast('✅ Task updated successfully!');
+   form.onsubmit = addTask; //restore original submit handler
+   saveTasks();   
+   //showToast('✅ Task updated successfully!');
   };
   });
 
   // --- DELETE BUTTON ---
     let cardToDelete = null;
   let lastDeletedCard = null;
-  
+
     const toast = document.getElementById('toast');
   const confirmModal = document.getElementById('confirmModal');
   document.addEventListener('click', (e) => {
