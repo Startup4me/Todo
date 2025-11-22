@@ -158,10 +158,13 @@ function renderTask(task,isCompleted=false){
   taskHeader.appendChild(checkbox);
   taskHeader.appendChild(taskTitle);
 
+  taskCard.appendChild(taskHeader);
+  if(task.desc){
   let taskDesc = document.createElement('div');
   taskDesc.className ='task-desc';
   taskDesc.textContent = task.desc;
-
+  taskCard.appendChild(taskDesc);
+}
   const taskFooter =document.createElement('div');
   taskFooter.className = 'task-footer';
 
@@ -174,10 +177,9 @@ function renderTask(task,isCompleted=false){
 
   taskFooter.appendChild(dateEl);
   taskFooter.appendChild(flag);
-
-  taskCard.appendChild(taskHeader);
-  if(task.desc) taskCard.appendChild(taskDesc);
+ 
   taskCard.appendChild(taskFooter);
+
   // --- Edit & Delete button ---
  const actions = document.createElement('div');
  actions.className = 'task-actions';
@@ -218,7 +220,11 @@ else {
     // It's a custom date
     taskDate.value = "custom";
     customDateInput.classList.remove('hidden');
-    customDateInput.value = new Date(task.date).toISOString().split("T")[0];
+    const d = new Date(task.date);
+customDateInput.value = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+
+   
+    console.log(customDateInput.value);
 } 
 
   taskPriority.value = task.priority;
@@ -239,7 +245,7 @@ else {
       }else{
         const newDesc = document.createElement('div');
 
-    dateEl.textContent = `📆 ${task.date}`;
+   
         newDesc.className ='task-desc';
         newDesc.textContent =task.desc;
         taskCard.insertBefore(newDesc,taskFooter);
@@ -249,7 +255,7 @@ else {
       // If description is empty after edit -> remove element (optional) 
       if(taskDesc) taskDesc.remove();
     }
-
+   
    task.priority = taskPriority.value;
      // update date properly
   if (taskDate.value === "custom") {
@@ -261,9 +267,10 @@ else {
   } else if (taskDate.value === "weekend") {
     task.date = new Date(getWeekendDate()).toDateString();
   }
+   dateEl.textContent = `📆 ${task.date}`;
    taskTitle.textContent = task.title;
    flag.className= `flag priority-${task.priority}`;
-   dateEl.textContent =task.date; 
+
 
    collapseForm(); 
    addBtnText.textContent ='Add Task';
@@ -340,7 +347,7 @@ function saveTasks(){
 document.querySelectorAll('.todo-container .task-card').forEach(card=>{
   const title = card.querySelector('.task-title').textContent;
   const desc = card.querySelector('.task-desc')?.textContent || '';
-  const date = card.querySelector('.task-footer span:not(.flag)').textContent;
+  let date = card.querySelector('.task-footer span:not(.flag)').textContent;
 
   date =date.replace("📆","").trim();// Remove emoji before saving
   
@@ -354,7 +361,7 @@ const completed =[];
 document.querySelectorAll('.completed-container .task-card').forEach(card=>{
   const title = card.querySelector('.task-title').textContent;
   const desc = card.querySelector('.task-desc')?.textContent || '';
-  const date = card.querySelector('.task-footer span:not(.flag)').textContent;
+  let date = card.querySelector('.task-footer span:not(.flag)').textContent;
 
   date = date.replace("📆","").trim();// Remove emoji before saving
   
