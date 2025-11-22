@@ -133,50 +133,6 @@ window.addEventListener("DOMContentLoaded",()=>{
     </div>
   `;
 })*/
-// ============
-// LOCAL STORAGE HANDLER
-// ============ 
-
-function saveTasks(){ 
-  const tasks = [];
-
-document.querySelectorAll('.todo-container .task-card').forEach(card=>{
-  const title = card.querySelector('.task-title').textContent;
-  const desc = card.querySelector('.task-desc')?.textContent || '';
-  const date = card.querySelector('.task-footer span:not(.flag)').textContent;
-
-  date =date.replace("📆","").trim();// Remove emoji before saving
-  
-
-  const priorityClass =card.querySelector('.flag').classList[1];
-  const priority = priorityClass.replace('priority-','');
-  tasks.push({title,desc,date,priority, complete: false});
-});
-
-const completed =[];
-document.querySelectorAll('.completed-container .task-card').forEach(card=>{
-  const title = card.querySelector('.task-title').textContent;
-  const desc = card.querySelector('.task-desc')?.textContent || '';
-  const date = card.querySelector('.task-footer span:not(.flag)').textContent;
-
-  date = date.replace("📆","").trim();// Remove emoji before saving
-  
-  const priorityClass = card.querySelector('.flag').classList[1];
-  const priority = priorityClass.replace('priority-', '');
-    completed.push({ title, desc, date, priority, completed: true });
-});
-
-localStorage.setItem('tasks', JSON.stringify(tasks));
-localStorage.setItem('completedTasks',JSON.stringify(completed));
-
-}
-
-function loadTasks(){
-  const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-  const completed = JSON.parse(localStorage.getItem('completedTasks')) || [];
-  tasks.forEach(t => renderTask(t));
-  completed.forEach(t => renderTask(t, true));
-} 
 // ====================
 // RENDER TASK FUNCTION
 // ====================
@@ -214,7 +170,7 @@ function renderTask(task,isCompleted=false){
 
   const flag = document.createElement('span');
   flag.classList.add('flag',`priority-${task.priority}`);
-  flag.textContent = '⚑';
+  flag.textContent = '⚑';  
 
   taskFooter.appendChild(dateEl);
   taskFooter.appendChild(flag);
@@ -267,8 +223,9 @@ else {
 
   taskPriority.value = task.priority;
 
-  const addBtn = document.getElementById('add-btn');
-  addBtn.textContent ='Save';
+  // const addBtn = document.getElementById('add-btn');
+  addBtnText.textContent ='Save';
+  addBtnIcon.textContent ="💾"; 
 
   form.onsubmit = (e) => {
     e.preventDefault();
@@ -309,7 +266,8 @@ else {
    dateEl.textContent =task.date; 
 
    collapseForm(); 
-   addBtn.textContent ='Add Task';
+   addBtnText.textContent ='Add Task';
+   addBtnIcon.textContent ="➤";
    form.onsubmit = addTask; //restore original submit handler
    saveTasks();   
    //showToast('✅ Task updated successfully!');
@@ -371,17 +329,51 @@ else {
     }, 550); // match CSS exit duration (slightly less than or equal to CSS)
   });
 
-  // Checkbox logic (move to completed)
-  // checkbox.addEventListener('change',()=>{
-  //   if(checkbox.checked){
-  //     document.querySelector('.completed-container').appendChild(taskCard);
-      
-  //   }else{
-  //     document.querySelector('.todo-container').appendChild(taskCard);  
-  //   }
-  //   saveTasks();
-  // })
 }
+// ============
+// LOCAL STORAGE HANDLER
+// ============ 
+
+function saveTasks(){ 
+  const tasks = [];
+
+document.querySelectorAll('.todo-container .task-card').forEach(card=>{
+  const title = card.querySelector('.task-title').textContent;
+  const desc = card.querySelector('.task-desc')?.textContent || '';
+  const date = card.querySelector('.task-footer span:not(.flag)').textContent;
+
+  date =date.replace("📆","").trim();// Remove emoji before saving
+  
+
+  const priorityClass =card.querySelector('.flag').classList[1];
+  const priority = priorityClass.replace('priority-','');
+  tasks.push({title,desc,date,priority, complete: false});
+});
+
+const completed =[];
+document.querySelectorAll('.completed-container .task-card').forEach(card=>{
+  const title = card.querySelector('.task-title').textContent;
+  const desc = card.querySelector('.task-desc')?.textContent || '';
+  const date = card.querySelector('.task-footer span:not(.flag)').textContent;
+
+  date = date.replace("📆","").trim();// Remove emoji before saving
+  
+  const priorityClass = card.querySelector('.flag').classList[1];
+  const priority = priorityClass.replace('priority-', '');
+    completed.push({ title, desc, date, priority, completed: true });
+});
+
+localStorage.setItem('tasks', JSON.stringify(tasks));
+localStorage.setItem('completedTasks',JSON.stringify(completed));
+
+}
+
+function loadTasks(){
+  const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+  const completed = JSON.parse(localStorage.getItem('completedTasks')) || [];
+  tasks.forEach(t => renderTask(t));
+  completed.forEach(t => renderTask(t, true));
+} 
 
 //====================
 // SHOW/HIDE COMPLETED
