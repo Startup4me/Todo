@@ -10,6 +10,9 @@ const customDateInput= document.getElementById('custom-date');
 const Title=document.getElementById("task-title");
 const taskDescInput=document.getElementById("task-desc");
 const taskPriority = document.getElementById("task-priority");
+const Cancel =document.querySelector(".btn-cancel");
+let isEditing =false;
+const toast = document.getElementById('toast');
 //min date =today
 const today =new Date().toISOString().split('T')[0];
 customDateInput.min=today;
@@ -137,6 +140,7 @@ window.addEventListener("DOMContentLoaded",()=>{
 // RENDER TASK FUNCTION
 // ====================
 function renderTask(task,isCompleted=false){
+ 
   const container = isCompleted
   ? document.querySelector('.completed-container')
   :document.querySelector('.todo-container');
@@ -202,6 +206,7 @@ function renderTask(task,isCompleted=false){
   //--- EDIT Button ---
   editBtn.addEventListener('click',()=>{
   expandForm();
+  isEditing =true;
 
  taskDesc = taskCard.querySelector(".task-desc");
   Title.value = task.title;
@@ -232,7 +237,7 @@ customDateInput.value = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(
   // const addBtn = document.getElementById('add-btn');
   addBtnText.textContent ='Save';
   addBtnIcon.textContent ="💾"; 
-
+   
   form.onsubmit = (e) => {
     e.preventDefault();
 
@@ -273,6 +278,7 @@ customDateInput.value = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(
 
 
    collapseForm(); 
+   showToast("💾Task updated successfully!","edit");
    addBtnText.textContent ='Add Task';
    addBtnIcon.textContent ="➤";
    form.onsubmit = addTask; //restore original submit handler
@@ -281,12 +287,14 @@ customDateInput.value = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(
   };
   });
 
+
   // --- DELETE BUTTON ---
     let cardToDelete = null;
-  let lastDeletedCard = null;
+    let lastDeletedCard = null;
 
-    const toast = document.getElementById('toast');
+  
   const confirmModal = document.getElementById('confirmModal');
+
   document.addEventListener('click', (e) => {
     if (e.target.classList.contains('delete-btn')) {
       cardToDelete = e.target.closest('.task-card');
@@ -294,8 +302,42 @@ customDateInput.value = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(
     }
 
     if (e.target.classList.contains('confirm-no')) {
-      confirmModal.classList.remove('show');
-    }});
+      confirmModal.classList.remove('show');  
+    }
+   if(e.target.classList.contains('confirm-yes')){
+     confirmModal.classList.remove('show');
+
+     if(cardToDelete){ 
+    lastDeletedCard = {
+      node: cardToDelete.cloneNode(true),
+      index: Array.from(todoContainer.children).indexOf(cardToDelete)
+    };
+    cardToDelete.remove();
+    cardToDelete =null;
+    showToast("🗑️ Task deleted successfully","warning",true);
+   }
+   }
+  
+   if(e.target.classList.contains('undo-btn')){
+    if (!lastDeletedCard) return;
+     if(lastDeletedCard.index >= todoContainer.children.length){
+    todoContainer.appendChild(lastDeletedCard.node) }else{
+      todoContainer.insertBefore(lastDeletedCard.node,todoContainer.children[lastDeletedCard.index]);
+    }
+      lastDeletedCard =null;
+    toast.classList.remove("show");
+    
+   }
+  });
+
+   Cancel.addEventListener('click',()=>{
+    if(isEditing){
+       addBtnText.textContent ='Add Task';
+      addBtnIcon.textContent ="➤";
+    } 
+    isEditing =false;
+    collapseForm(); 
+   })
   // Force reflow then animate in
   // (gives the browser a frame to apply the .hide state before we remove it)
   requestAnimationFrame(() => {
@@ -402,6 +444,24 @@ if(isShow){
 }
 });
 
+function showToast(message, type, includeUndo =false){
+  toast.textContent = message;
+
+  if(includeUndo){
+    const undoBtn = document.createElement("span");
+    undoBtn.classList.add("undo-btn");
+    undoBtn.innerText="Undo";
+    undoBtn.onclick = undoDelete;
+    toast.appendChild(undoBtn);
+  }
+ if(type === "warning") toast.classList.add("toast-warning");
+ if(type === "edit") toast.classList.add("toast-edit");
+  toast.classList.add("show");
+
+  setTimeout(()=>{
+    toast.classList.remove("show");
+  },3000);
+}
 // INIT APP
 window.addEventListener('DOMContentLoaded',()=>{
   loadTasks();

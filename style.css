@@ -429,6 +429,7 @@ width: calc(100% +40px);
   }
   .confirm-yes{ background: #ef4444;color: white;}
   .confirm-no{ background: #c7cad1; }
+
  /* Responsive adjustment */
 @media(max-width:480px){
 
