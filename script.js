@@ -12,7 +12,7 @@ const taskDescInput=document.getElementById("task-desc");
 const taskPriority = document.getElementById("task-priority");
 const Cancel =document.querySelector(".btn-cancel");
 let isEditing =false;
-const toast = document.getElementById('toast');
+const toast = document.querySelector('.toast');
 //min date =today
 const today =new Date().toISOString().split('T')[0];
 customDateInput.min=today;
@@ -145,8 +145,11 @@ function renderTask(task,isCompleted=false){
   ? document.querySelector('.completed-container')
   :document.querySelector('.todo-container');
 
-  const taskCard =document.createElement('div');
+  const taskCard =document.createElement('div');  
   taskCard.className ='task-card hide'; // IMPORTANT: start hidden
+
+  //🔥 attach task object to the card
+  taskCard.taskData =task;
 
   const taskHeader = document.createElement('div');
   taskHeader.className ='task-header';
@@ -173,6 +176,7 @@ function renderTask(task,isCompleted=false){
   taskFooter.className = 'task-footer';
 
   const dateEl = document.createElement('span');
+  dateEl.className = "task-date";
   dateEl.textContent = `📆 ${task.date}`;
 
   const flag = document.createElement('span');
@@ -203,12 +207,77 @@ function renderTask(task,isCompleted=false){
   // Append to container (still hidden)
   container.appendChild(taskCard);
 
-  //--- EDIT Button ---
-  editBtn.addEventListener('click',()=>{
+ 
+   Cancel.addEventListener('click',()=>{
+    if(isEditing){
+       addBtnText.textContent ='Add Task';
+      addBtnIcon.textContent ="➤";
+    } 
+    isEditing =false;
+    collapseForm(); 
+   })
+  // Force reflow then animate in
+  // (gives the browser a frame to apply the .hide state before we remove it)
+  requestAnimationFrame(() => {
+    // small delay to ensure CSS has applied .hide
+    setTimeout(() => {
+      taskCard.classList.remove('hide');
+      taskCard.classList.add('slide-in');
+      // remove the animation class after it finishes so future animations work
+      setTimeout(() => taskCard.classList.remove('slide-in'), 350); // match CSS duration
+    }, 10);
+  });
+    // Move card with exit/enter animation when checkbox toggled
+  checkbox.addEventListener('change', () => {
+    // target containers
+    const fromContainer = checkbox.checked
+      ? document.querySelector('.todo-container')
+      : document.querySelector('.completed-container');
+
+    const toContainer = checkbox.checked
+      ? document.querySelector('.completed-container')
+      : document.querySelector('.todo-container');
+
+    // play exit animation
+    taskCard.classList.remove('slide-in');
+    taskCard.classList.add('slide-out');
+
+    // after exit animation finishes, move and animate in
+    setTimeout(() => {
+      taskCard.classList.remove('slide-out');
+      toContainer.appendChild(taskCard);
+
+      // animate in
+      taskCard.classList.add('slide-in');
+      setTimeout(() => taskCard.classList.remove('slide-in'), 820); // match CSS duration
+
+      // persist changes
+      saveTasks(); 
+    }, 550); // match CSS exit duration (slightly less than or equal to CSS)
+  });
+
+}
+
+ //--- EDIT Button ---
+ document.addEventListener('click',(e)=>{
+  if(e.target.classList.contains("edit-btn")){
+    const taskCard =e.target.closest(".task-card");
+    startEdit(taskCard);
+  }
+ })
+ function startEdit(taskCard){
+  const task =taskCard.taskData;//🔥 now you get the object  
+  console.log("hi");
   expandForm();
   isEditing =true;
+ 
+   // 🔥 get DOM elements from card
+  const taskTitle = taskCard.querySelector(".task-title");
+  const taskDesc  = taskCard.querySelector(".task-desc");
+  const taskFooter = taskCard.querySelector(".task-footer");
+  const dateEl = taskCard.querySelector(".task-date");
+  const flag = taskCard.querySelector(".flag");
 
- taskDesc = taskCard.querySelector(".task-desc");
   Title.value = task.title;
   taskDescInput.value =task.desc;
    // Restore correct date option
@@ -285,7 +354,7 @@ customDateInput.value = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(
    saveTasks();   
    //showToast('✅ Task updated successfully!');
   };
-  });
+  };
 
 
   // --- DELETE BUTTON ---
@@ -328,57 +397,9 @@ customDateInput.value = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(
     toast.classList.remove("show");
     
    }
+ saveTasks(); 
   });
 
-   Cancel.addEventListener('click',()=>{
-    if(isEditing){
-       addBtnText.textContent ='Add Task';
-      addBtnIcon.textContent ="➤";
-    } 
-    isEditing =false;
-    collapseForm(); 
-   })
-  // Force reflow then animate in
-  // (gives the browser a frame to apply the .hide state before we remove it)
-  requestAnimationFrame(() => {
-    // small delay to ensure CSS has applied .hide
-    setTimeout(() => {
-      taskCard.classList.remove('hide');
-      taskCard.classList.add('slide-in');
-      // remove the animation class after it finishes so future animations work
-      setTimeout(() => taskCard.classList.remove('slide-in'), 350); // match CSS duration
-    }, 10);
-  });
-    // Move card with exit/enter animation when checkbox toggled
-  checkbox.addEventListener('change', () => {
-    // target containers
-    const fromContainer = checkbox.checked
-      ? document.querySelector('.todo-container')
-      : document.querySelector('.completed-container');
-
-    const toContainer = checkbox.checked
-      ? document.querySelector('.completed-container')
-      : document.querySelector('.todo-container');
-
-    // play exit animation
-    taskCard.classList.remove('slide-in');
-    taskCard.classList.add('slide-out');
-
-    // after exit animation finishes, move and animate in
-    setTimeout(() => {
-      taskCard.classList.remove('slide-out');
-      toContainer.appendChild(taskCard);
-
-      // animate in
-      taskCard.classList.add('slide-in');
-      setTimeout(() => taskCard.classList.remove('slide-in'), 820); // match CSS duration
-
-      // persist changes
-      saveTasks(); 
-    }, 550); // match CSS exit duration (slightly less than or equal to CSS)
-  });
-
-}
 // ============
 // LOCAL STORAGE HANDLER
 // ============ 
@@ -445,24 +466,27 @@ if(isShow){
 });
 
 function showToast(message, type, includeUndo =false){
-  toast.textContent = message;
+  toast.innerHTML="";// reset content before adding new message & undo
+  toast.textContent = message; 
 
   if(includeUndo){
     const undoBtn = document.createElement("span");
     undoBtn.classList.add("undo-btn");
     undoBtn.innerText="Undo";
-    undoBtn.onclick = undoDelete;
+    // undoBtn.onclick = undoDelete;
     toast.appendChild(undoBtn);
   }
+  // remove previous color classes
+  toast.classList.remove("toast-warning","toast-edit");
  if(type === "warning") toast.classList.add("toast-warning");
  if(type === "edit") toast.classList.add("toast-edit");
   toast.classList.add("show");
 
   setTimeout(()=>{
     toast.classList.remove("show");
-  },3000);
+  },4000);
 }
 // INIT APP
-window.addEventListener('DOMContentLoaded',()=>{
+window.addEventListener('DOMContentLoaded',()=>{ 
   loadTasks();
 })  
