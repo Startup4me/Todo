@@ -10,7 +10,7 @@ const customDateInput= document.getElementById('custom-date');
 const Title=document.getElementById("task-title");
 const taskDescInput=document.getElementById("task-desc");
 const taskPriority = document.getElementById("task-priority");
-const Cancel =document.querySelector(".btn-cancel");
+const Cancel =document.querySelectorAll(".btn-cancel");
 let isEditing =false;
 const toast = document.querySelector('.toast');
 //min date =today
@@ -208,14 +208,6 @@ function renderTask(task,isCompleted=false){
   container.appendChild(taskCard);
 
  
-   Cancel.addEventListener('click',()=>{
-    if(isEditing){
-       addBtnText.textContent ='Add Task';
-      addBtnIcon.textContent ="➤";
-    } 
-    isEditing =false;
-    collapseForm(); 
-   })
   // Force reflow then animate in
   // (gives the browser a frame to apply the .hide state before we remove it)
   requestAnimationFrame(() => {
@@ -257,6 +249,19 @@ function renderTask(task,isCompleted=false){
   });
 
 }
+
+   Cancel.forEach(btn=>{
+    btn .addEventListener('click',()=>{
+    if(isEditing){
+       addBtnText.textContent ='Add Task';
+      addBtnIcon.textContent ="➤";
+    } 
+    isEditing =false;
+    collapseForm();   
+  });
+   });
+  
+ 
 
  //--- EDIT Button ---
  document.addEventListener('click',(e)=>{
