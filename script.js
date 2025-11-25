@@ -12,7 +12,7 @@ const taskDescInput=document.getElementById("task-desc");
 const taskPriority = document.getElementById("task-priority");
 const Cancel =document.querySelectorAll(".btn-cancel");
 let isEditing =false;
-const toast = document.querySelector('.toast');
+
 //min date =today
 const today =new Date().toISOString().split('T')[0];
 customDateInput.min=today;
@@ -352,7 +352,7 @@ customDateInput.value = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(
 
 
    collapseForm(); 
-   showToast("💾Task updated successfully!","edit");
+   showToast("💾 Task updated successfully!","edit");
    addBtnText.textContent ='Add Task';
    addBtnIcon.textContent ="➤";
    form.onsubmit = addTask; //restore original submit handler
@@ -381,23 +381,40 @@ customDateInput.value = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(
    if(e.target.classList.contains('confirm-yes')){
      confirmModal.classList.remove('show');
 
-     if(cardToDelete){ 
+     if(cardToDelete){  
+      const parent = cardToDelete.parentElement;
+
     lastDeletedCard = {
-      node: cardToDelete.cloneNode(true),
-      index: Array.from(todoContainer.children).indexOf(cardToDelete)
+      task: {...cardToDelete.taskData},
+      index: Array.from(parent.children).indexOf(cardToDelete),
+    wasCompleted: parent.classList.contains("completed-container")
     };
     cardToDelete.remove();
     cardToDelete =null;
     showToast("🗑️ Task deleted successfully","warning",true);
    }
    }
-  
+   // UNDO DELETE
    if(e.target.classList.contains('undo-btn')){
     if (!lastDeletedCard) return;
-     if(lastDeletedCard.index >= todoContainer.children.length){
-    todoContainer.appendChild(lastDeletedCard.node) }else{
-      todoContainer.insertBefore(lastDeletedCard.node,todoContainer.children[lastDeletedCard.index]);
-    }
+
+    // Render card again so event listeners work
+    renderTask(lastDeletedCard.task, lastDeletedCard.wasCompleted);
+
+    const container =lastDeletedCard.wasCompleted
+    ? document.querySelector('.completed-container')
+    : document.querySelector('.todo-container');
+
+    const newCard = container.lastElementChild;// the card that renderTask just appended
+    
+       if(lastDeletedCard.index >= container.children.length){
+      container.appendChild(newCard);//append at end
+    } else{
+      container.insertBefore(newCard,container.children[lastDeletedCard.index]);
+
+    };
+    
+   
       lastDeletedCard =null;
     toast.classList.remove("show");
     
@@ -471,8 +488,11 @@ if(isShow){
 });
 
 function showToast(message, type, includeUndo =false){
-  toast.innerHTML="";// reset content before adding new message & undo
-  toast.textContent = message; 
+ const toastContainer = document.getElementById('toast');
+  toastContainer.innerHTML="";// reset content before adding new message & undo
+  const toast =document.createElement("div");
+  toast.classList.add("toast-message",`toast-${type}`);
+  toast.innerText = message; 
 
   if(includeUndo){
     const undoBtn = document.createElement("span");
@@ -481,14 +501,10 @@ function showToast(message, type, includeUndo =false){
     // undoBtn.onclick = undoDelete;
     toast.appendChild(undoBtn);
   }
-  // remove previous color classes
-  toast.classList.remove("toast-warning","toast-edit");
- if(type === "warning") toast.classList.add("toast-warning");
- if(type === "edit") toast.classList.add("toast-edit");
-  toast.classList.add("show");
+  toastContainer.appendChild(toast);
 
   setTimeout(()=>{
-    toast.classList.remove("show");
+  toast.remove();
   },4000);
 }
 // INIT APP

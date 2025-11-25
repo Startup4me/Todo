@@ -430,14 +430,16 @@ width: calc(100% +40px);
   .confirm-yes{ background: #ef4444;color: white;}
   .confirm-no{ background: #c7cad1; }
  
-.toast{
+#toast{
   position: fixed;
   bottom: 30px;
   left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+
+  /* background: #1e293b;
+  color: white;
   transform: translateX(-50%) translateY(100%);
-  background: #1e293b;
-  color: #fff;
-  padding: 12px 22px;
   border-radius: 12px;
   font-size: 0.95rem;
   display: flex;
@@ -445,14 +447,50 @@ width: calc(100% +40px);
   gap: 10px;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
   transition: transform 0.4s ease, opacity 0.4s ease;
-  opacity: 0;
-  z-index: 200;
+  opacity: 1;
+  z-index: 200; */
   }
 
-  .toast.show{
-   transform: translateX(-50%) translateY(0);
-   opacity: 1;
+  .toast-message{
+    display: flex;
+    padding: 15px 25px;
+    border-radius: 8px;
+    color: white;
+    font-weight: 700;
+    font-size: 15px;
+    min-width: 240px;
+    max-width: 330px;
+    justify-content: center;
+    margin-top: 12px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+    gap: 12px; /* 🔥 automatic spacing between message and Undo */
+       transition: opacity 0.45s ease,transform 0.45s cubic-bezier(0.22, 1, 0.36, 1)  ;
+     /* 👇 full animation using keyframes */
+      animation: toastSlide 4s ease forwards;
+   
   }
+  @keyframes toastSlide {
+    0%{ opacity: 0;
+        transform: translateY(25px)scale(0.95);
+    }
+    12% {
+        opacity: 1;
+        transform: translateY(-3px) scale(1.04);
+      }
+    22% {
+         opacity: 1;
+         transform: translateY(0) scale(1);  /* settle down */
+     }
+      80% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(25px) scale(0.95);
+      }
+  }
+
   /* .toast-warning{background:#DC2626;} */
    .toast-warning{background:#1e293b;}
   .toast-edit{background: #16A34A;}
@@ -460,6 +498,7 @@ width: calc(100% +40px);
   .undo-btn{
     background: none;
     border: none;
+    margin-left:14px;
     color: #60a5fa;
     font-weight: 600;
     cursor: pointer;
