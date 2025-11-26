@@ -15,16 +15,18 @@ body{
   width: 400px;
   border-radius: 16px;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.8);
-  padding: 20px;
+  padding: 20px 20px 0px 20px;
   animation: fadeIn 0.6s ease;
-  
-  
-  overflow-x: hidden;
-  overflow-y: auto; /* scroll when contents exceeds max-height */
+   height: 95vh;    
+  display: flex;
+  overflow: hidden;  /* IMPORTANT */
+  flex-direction: column;  /* IMPORTANT */
+ 
 
 } 
 /* --- Top Bar --- */
 .top-bar{
+
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -35,6 +37,7 @@ body{
   margin:-20px -20px 20px -20px;
   width: auto;
   height:60px;
+  z-index: 10;
 
  background: linear-gradient(270deg, #ff7e5f, #feb47b, #86a8e7, #91eae4);  
 
@@ -239,12 +242,19 @@ width: calc(100% +40px);
 }
 /* Task list */
 .todo-container{
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: visible;
+  padding: 5px 5px 20px 5px;
   display: flex;
   flex-direction: column;
   gap: 12px;
 
 }
- 
+ .todo-container::-webkit-scrollbar,
+ .completed-container::-webkit-scrollbar{
+  width: 6px;
+ }
 /* Hide by default */
 .hidden{ display: none;}
 
@@ -396,7 +406,10 @@ width: calc(100% +40px);
     100%{transform: scale(1);}
   }
 
-.completed-container{
+.completed-container{ 
+  overflow-y: auto;
+  overflow-x: visible;
+  padding: 5px 5px 20px 5px;
   background:#7ba6fa ;
   border-radius: 10px;
   flex-direction: column;
@@ -481,21 +494,24 @@ width: calc(100% +40px);
 
   .toast-message{
     display: flex;
+    align-items: center;/* vertically center text & button */
+    justify-content: center;
     padding: 15px 25px;
     border-radius: 8px;
     color: white;
     font-weight: 700;
     font-size: 15px;
     min-width: 240px;
-    max-width: 330px;
+    max-width: 90vw; 
     justify-content: center;
     margin-top: 12px;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+    text-align: center;
     gap: 12px; /* 🔥 automatic spacing between message and Undo */
        transition: opacity 0.45s ease,transform 0.45s cubic-bezier(0.22, 1, 0.36, 1)  ;
      /* 👇 full animation using keyframes */
       animation: toastSlide 4s ease forwards;
-   
+
   }
   @keyframes toastSlide {
     0%{ opacity: 0;
