@@ -82,7 +82,42 @@ body{
   height: 25px;
   color: #333;
 }
+.right-tools{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-right: 5px;
+}
+/* Profile image */
+.profile-box{
+  width: 55px;
+  height: 55px;
+  border-radius: 25%;
+  overflow: hidden;
+  cursor: pointer;
+  border: 2px solid white;
+}
+.profile-box img{
+  width: 100%;
+  height: 100%;
+  object-fit:cover;
+}
+.menu-dots{
+  height: 40px;
+  width: 40px;
+  padding: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 12px;
+  transition: background 0.5s ease;
 
+}
+.menu-dots:hover{
+   background: #efefefb7;
+   backdrop-filter: blur(10px) brightness(1.2);
+}
 #showCompletedBtn {
   background: transparent;
   border: none;
@@ -245,7 +280,7 @@ width: calc(100% +40px);
   flex: 1;
   overflow-y: auto;
   overflow-x: visible;
-  padding: 5px 5px 20px 5px;
+  padding: 5px 5px 40px 5px;
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -269,7 +304,10 @@ width: calc(100% +40px);
    position: relative; /*❓🙋🏻‍♂️⁉❔ */
    transition: transform 0.4s ease, opacity 0.4s ease;/**/
 }
-
+/* .task-card:hover{
+  transform: translateY(-6px)scale(1.02);
+ box-shadow: 0px 8px 6px rgba(0, 0, 0, 0.8); 
+} */
 .task-header{
   display: flex;
   align-items: center;
@@ -312,6 +350,7 @@ width: calc(100% +40px);
   transition: opacity 0.3s ease;
 
 }
+
 .task-card:hover .task-actions{
   opacity: 1;
   pointer-events: auto;
@@ -409,7 +448,7 @@ width: calc(100% +40px);
 .completed-container{ 
   overflow-y: auto;
   overflow-x: visible;
-  padding: 5px 5px 20px 5px;
+  padding: 5px 5px 40px 5px;
   background:#7ba6fa ;
   border-radius: 10px;
   flex-direction: column;
