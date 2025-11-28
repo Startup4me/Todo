@@ -440,7 +440,7 @@ document.querySelectorAll('.todo-container .task-card').forEach(card=>{
   const priorityClass =card.querySelector('.flag').classList[1];
   const priority = priorityClass.replace('priority-','');
   tasks.push({title,desc,date,priority, complete: false});
-});
+}); 
 
 const completed =[];
 document.querySelectorAll('.completed-container .task-card').forEach(card=>{
@@ -470,22 +470,52 @@ function loadTasks(){
 //====================
 // SHOW/HIDE COMPLETED
 //====================
-const showCompletedBtn = document.getElementById('showCompletedBtn');
-showCompletedBtn. addEventListener('click', ()=>{
-  const completedContainer =document.querySelector('.completed-container');
-  completedContainer.classList.toggle('show');
-   
-  // Change arrow direction  ▼ ↔ ▲
-  const isShow =completedContainer.classList.contains('show');
- 
-if(isShow){
-  showCompletedBtn.textContent="✅ Completed ▲";
-  todoContainer.classList.add('hidden');
-}else{
-  showCompletedBtn.textContent="✅ Completed ▼";
-   todoContainer.classList.remove('hidden');
-}
+const titleArrow = document.querySelector('.title-with-arrow');
+const arrowSvg =document.getElementById("arrowSvg");
+const dropdownMenu = document.getElementById("dropdownMenu");
+const completedContainer =document.querySelector('.completed-container');
+document.addEventListener('click',(e)=>{
+  const clickedInsideDropdown = dropdownMenu.contains(e.target);
+  const clickedTitle = titleArrow.contains(e.target);
+  // If clicked outside both → close dropdown
+  if (!clickedInsideDropdown && !clickedTitle) {
+    dropdownMenu.classList.remove("show");
+    arrowSvg.innerHTML = `<polygon points="12,16 6,8 18,8" />`; // reset arrow down
+  }
 });
+titleArrow.addEventListener('click', ()=>{
+  dropdownMenu.classList.toggle("show");
+  const isOpen = dropdownMenu.classList.contains("show");
+ 
+arrowSvg.innerHTML = isOpen
+?`<polygon points="12,8 6,16 18,16" />`// up arrow
+:`<polygon points="12,16 6,8 18,8" />`;// down arrow
+});
+
+// ------------------------------------------------
+// EVENT DELEGATION → Handle all dropdown items
+// ------------------------------------------------
+dropdownMenu.addEventListener('click',(e)=>{
+  const item =e.target.closest('.dropdown-item');
+  if(!item) return;// click outside item
+
+  const value = item.id;
+
+  //Close dropdown and reset arrow
+  dropdownMenu.classList.remove("show");
+  arrowSvg.innerHTML=`<polygon points="12,16 6,8 18,8" />`;
+// Handle actions
+if(value === "menuHome"){
+  todoContainer.classList.remove("hidden");
+  completedContainer.classList.add("hidden");
+}
+if(value === "menuFinished"){
+  todoContainer.classList.add("hidden");
+  completedContainer.classList.remove("hidden");
+}
+
+});
+
 
 function showToast(message, type, includeUndo =false){
  const toastContainer = document.getElementById('toast');

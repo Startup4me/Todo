@@ -14,8 +14,8 @@
     <!-- Wrap text and arrow together -->
      <div class="title-with-arrow">
     <h2>My tasks</h2>
-  <div class="arrow-icon">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+  <div class="arrow-icon" id="arrowIcon">
+      <svg id="arrowSvg" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
     <polygon points="12,16 6,8 18,8" />
       </svg>
     </div>
@@ -105,11 +105,13 @@
   
   <!----------DROPDOWN------------>
   <div class="dropdown" id="dropdownMenu">
-    <div class="dropdown-item">
+    <div class="dropdown-item" id="menuHome">
   <img src="assets/icons/home.svg" class="menu-icon">
+  <span class="item-text">Tasks</span>
 </div>
-    <div class="dropdown-item">
+    <div class="dropdown-item" id="menuFinished">
     <img src="assets/icons/Checkbox.svg" class="checkbox-icon">
+    <span class="item-text">Finished</span>
     </div>
   </div>
   </div>
