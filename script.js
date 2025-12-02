@@ -515,7 +515,47 @@ if(value === "menuFinished"){
 }
 
 });
+//====================
+// THREE DOTS DROPDOWN
+//====================
+const dotBtn = document.getElementById("dotsBtn");
+const moreOptionsDropdown = document.getElementById("moreOptionsDropdown");
 
+//OPEN / CLOSE on click
+dotBtn.addEventListener('click',(e)=>{
+  moreOptionsDropdown.classList.toggle("show");
+});
+//close when clicking outside
+document.addEventListener('click',(e)=>{
+const clickedInsideMenu =moreOptionsDropdown.contains(e.target);
+const clickedDots = dotBtn.contains(e.target);
+
+if(!clickedDots && !clickedInsideMenu){
+  moreOptionsDropdown.classList.remove("show");
+}
+});
+//OPTION-> handle menu items
+moreOptionsDropdown.addEventListener('click',(e)=>{
+  const item = e.target.closest(".dropdown-item");
+  if(!item) return;
+
+  const value = item.id;
+  //close dropdown after click
+  moreOptionsDropdown.classList.remove("show");
+
+  if(value === "menuAllDel"){
+
+   console.log("Delete all");
+  }
+
+ if (value === "menuFeedback") {
+    console.log("Feedback clicked");
+  }
+
+  if (value === "menuInvite") {
+    console.log("Invite clicked");
+  }
+})
 
 function showToast(message, type, includeUndo =false){
  const toastContainer = document.getElementById('toast');
