@@ -363,25 +363,35 @@ customDateInput.value = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(
 
 
   // --- DELETE BUTTON ---
+    let active;
+    let deleteMode = "single";
     let cardToDelete = null;
     let lastDeletedCard = null;
 
   
   const confirmModal = document.getElementById('confirmModal');
+  const confirmTitle = document.getElementById('confirmTitle');
+  const confirmDesc = document.getElementById('confirmDesc');
+  const confirmYes =document.getElementById('confirmYes');
 
   document.addEventListener('click', (e) => {
     if (e.target.classList.contains('delete-btn')) {
       cardToDelete = e.target.closest('.task-card');
+      confirmTitle.innerText="🗑️ Delete this task ?";
+      confirmDesc.innerText="This action cannot be undone.";
+      confirmYes.innerText="Delete"
       confirmModal.classList.add('show');
     }
 
-    if (e.target.classList.contains('confirm-no')) {
+    if (e.target.classList.contains('confirm-no')) { deleteMode ='single';//interesting error solve(when click no after delete all)
       confirmModal.classList.remove('show');  
     }
    if(e.target.classList.contains('confirm-yes')){
      confirmModal.classList.remove('show');
-
-     if(cardToDelete){  
+     // ----------------------------------
+     // CASE 1: SINGLE DELETE
+     // ----------------------------------
+     if(deleteMode === "single" && cardToDelete){  
       const parent = cardToDelete.parentElement;
 
     lastDeletedCard = {
@@ -392,6 +402,16 @@ customDateInput.value = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(
     cardToDelete.remove();
     cardToDelete =null;
     showToast("🗑️ Task deleted successfully","warning",true);
+   }else if(deleteMode ==='All'){
+    //Clear UI
+    active.innerHTML="";
+
+    //Clear storage
+    if(active=== todoContainer){
+       localStorage.setItem("tasks",JSON.stringify([]));
+    }else{localStorage.setItem("completedTasks",JSON.stringify([])); }
+    deleteMode="single";
+    showToast("🧹All tasks deleted","all");
    }
    }
    // UNDO DELETE
@@ -417,7 +437,7 @@ customDateInput.value = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(
    
       lastDeletedCard =null;
     toast.classList.remove("show");
-    
+     
    }
  saveTasks(); 
   });
@@ -439,7 +459,7 @@ document.querySelectorAll('.todo-container .task-card').forEach(card=>{
 
   const priorityClass =card.querySelector('.flag').classList[1];
   const priority = priorityClass.replace('priority-','');
-  tasks.push({title,desc,date,priority, complete: false});
+  tasks.push({title,desc,date,priority, completed: false});
 }); 
 
 const completed =[];
@@ -544,9 +564,17 @@ moreOptionsDropdown.addEventListener('click',(e)=>{
   moreOptionsDropdown.classList.remove("show");
 
   if(value === "menuAllDel"){
-
-   console.log("Delete all");
-  }
+   active = todoContainer.classList.contains('hidden') ?completedContainer:todoContainer;
+  confirmTitle.innerText=
+  active === todoContainer
+ ?"⚠️ Delete all tasks from To-do?"
+ :"⚠️ Delete all tasks from Completed?"
+ 
+  confirmDesc.innerText="All your tasks in this section will be removed permanently.";
+  confirmYes.innerText="Delete All"
+  confirmModal.classList.add('show');
+  deleteMode='All';
+  };
 
  if (value === "menuFeedback") {
     console.log("Feedback clicked");
@@ -555,13 +583,13 @@ moreOptionsDropdown.addEventListener('click',(e)=>{
   if (value === "menuInvite") {
     console.log("Invite clicked");
   }
-})
+});
 
 function showToast(message, type, includeUndo =false){
  const toastContainer = document.getElementById('toast');
   toastContainer.innerHTML="";// reset content before adding new message & undo
   const toast =document.createElement("div");
-  toast.classList.add("toast-message",`toast-${type}`);
+  toast.classList.add("toast-message",`toast-${type}`);  
   toast.innerText = message; 
 
   if(includeUndo){
