@@ -17,14 +17,14 @@
 
   <title>Todo App</title>
   <!-- WEB favicon -->
-   <link rel="icon" type="image/png" href="assets/favicon.png">
+   <link rel="icon" type="image/png" href="assets/image.jpg">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <div class="todo-app">
  <div class="top-bar">
   <div class="left">
-    <img src="assets/logo.png" class="logo" alt="Todo logo">
+    <img src="assets/image.png" class="logo" alt="Todo logo">
     <!-- Wrap text and arrow together -->
      <div class="title-with-arrow">
     <h2>My tasks</h2>
@@ -105,11 +105,11 @@
  <!-- --- Deletion Confirmation --- -->
   <div class="confirm-overlay" id="confirmModal">
     <div class="confirm-box">
-      <h3>🗑️ Delete this task ?</h3>
-      <p>This action cannot be undone.</p>
+      <h3 id="confirmTitle"></h3>
+      <p id="confirmDesc"></p>
       <div class="confirm-actions">
         <button class="confirm-btn confirm-no">Cancel</button>
-        <button class="confirm-btn confirm-yes">Delete</button>
+        <button class="confirm-btn confirm-yes" id="confirmYes"></button>
       </div>
     </div>
   </div>
