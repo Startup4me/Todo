@@ -12,6 +12,7 @@ const taskDescInput=document.getElementById("task-desc");
 const taskPriority = document.getElementById("task-priority");
 const Cancel =document.querySelectorAll(".btn-cancel");
 let isEditing =false;
+let editingCard =null ;
 
 //min date =today
 const today =new Date().toISOString().split('T')[0];
@@ -71,6 +72,7 @@ function getWeekendDate(){
 
 //Add task
 function addTask(e){
+  console.log("ui");
   e.preventDefault();
   
   const title =Title.value.trim();
@@ -262,6 +264,69 @@ function renderTask(task,isCompleted=false){
    });
   
  
+ //Form submit-logic for edit and add functionality
+ form.addEventListener("submit",(e)=>{
+  e.preventDefault();
+  if(isEditing && editingCard){ 
+    //used dynamic saved  the object 
+    const taskCard=editingCard;
+    const task = editingCard.taskData; 
+  // 🔥 get DOM elements from card
+  const taskTitle = taskCard.querySelector(".task-title");
+  let taskDesc  = taskCard.querySelector(".task-desc");
+  const taskFooter = taskCard.querySelector(".task-footer");
+  const dateEl = taskCard.querySelector(".task-date");
+  const flag = taskCard.querySelector(".flag");
+   task.title = Title.value.trim(); 
+    task.desc = taskDescInput.value.trim();
+    if(task.desc){
+   
+      if(taskDesc){
+        taskDesc.textContent =task.desc; 
+      }else{
+        const newDesc = document.createElement('div');
+        newDesc.className ='task-desc';
+        newDesc.textContent =task.desc;
+        taskCard.insertBefore(newDesc,taskFooter);
+        taskDesc =newDesc;// update reference
+      }
+    }else{
+      // If description is empty after edit -> remove element (optional) 
+      if(taskDesc) taskDesc.remove();
+      taskDesc = null;
+    
+    }
+   
+   task.priority = taskPriority.value;
+     // update date properly
+  if (taskDate.value === "custom") {
+    task.date = new Date(customDateInput.value).toDateString();
+  } else if (taskDate.value === "today") {
+    task.date = "Today";
+  } else if (taskDate.value === "tomorrow") {
+    task.date = new Date(Date.now() + 86400000).toDateString();
+  } else if (taskDate.value === "weekend") {
+    task.date = new Date(getWeekendDate()).toDateString();
+  }
+   dateEl.textContent = `📆 ${task.date}`;
+   taskTitle.textContent = task.title;
+   flag.className= `flag priority-${task.priority}`;
+   showToast("💾 Task updated successfully!","edit"); 
+}else{ 
+  addTask(e); 
+
+ } 
+   collapseForm(); 
+   saveTasks();   
+
+   isEditing =false;
+   editingCard=null;
+   addBtnText.textContent ='Add Task';
+   addBtnIcon.textContent ="➤";
+  // form.onsubmit = addTask; //restore original submit handler
+
+   //showToast('✅ Task updated successfully!');
+ });
 
  //--- EDIT Button ---
  document.addEventListener('click',(e)=>{
@@ -274,15 +339,10 @@ function renderTask(task,isCompleted=false){
   const task =taskCard.taskData;//🔥 now you get the object  
   console.log("hi");
   expandForm();
-  isEditing =true;
- 
-   // 🔥 get DOM elements from card
-  const taskTitle = taskCard.querySelector(".task-title");
-  const taskDesc  = taskCard.querySelector(".task-desc");
-  const taskFooter = taskCard.querySelector(".task-footer");
-  const dateEl = taskCard.querySelector(".task-date");
-  const flag = taskCard.querySelector(".flag");
-
+  
+  isEditing =true; 
+  editingCard =taskCard;
+   
   Title.value = task.title;
   taskDescInput.value =task.desc;
    // Restore correct date option
@@ -312,53 +372,7 @@ customDateInput.value = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(
   addBtnText.textContent ='Save';
   addBtnIcon.textContent ="💾"; 
    
-  form.onsubmit = (e) => {
-    e.preventDefault();
 
-    task.title = Title.value.trim(); 
-     task.desc = taskDescInput.value.trim();
-    if(task.desc){
-   
-      if(taskDesc){
-        taskDesc.textContent =task.desc; 
-      }else{
-        const newDesc = document.createElement('div');
-
-   
-        newDesc.className ='task-desc';
-        newDesc.textContent =task.desc;
-        taskCard.insertBefore(newDesc,taskFooter);
-        taskDesc =newDesc;// update reference
-      }
-    }else{
-      // If description is empty after edit -> remove element (optional) 
-      if(taskDesc) taskDesc.remove();
-    }
-   
-   task.priority = taskPriority.value;
-     // update date properly
-  if (taskDate.value === "custom") {
-    task.date = new Date(customDateInput.value).toDateString();
-  } else if (taskDate.value === "today") {
-    task.date = "Today";
-  } else if (taskDate.value === "tomorrow") {
-    task.date = new Date(Date.now() + 86400000).toDateString();
-  } else if (taskDate.value === "weekend") {
-    task.date = new Date(getWeekendDate()).toDateString();
-  }
-   dateEl.textContent = `📆 ${task.date}`;
-   taskTitle.textContent = task.title;
-   flag.className= `flag priority-${task.priority}`;
-
-
-   collapseForm(); 
-   showToast("💾 Task updated successfully!","edit");
-   addBtnText.textContent ='Add Task';
-   addBtnIcon.textContent ="➤";
-   form.onsubmit = addTask; //restore original submit handler
-   saveTasks();   
-   //showToast('✅ Task updated successfully!');
-  };
   };
 
 
