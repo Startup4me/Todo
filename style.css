@@ -671,6 +671,82 @@ width: calc(100% +40px);
     font-weight: 600;
     cursor: pointer;
   }
+  /*Overlay*/
+  #overlay{
+     font-family: "Poppins", sans-serif;
+     position: fixed;
+     inset: 0;
+     background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn .25s ease;
+    z-index: 100;
+  }
+  .modal{
+    width: 320px;
+    background: #1f1f35;
+    border-radius: 18px;
+    padding: 22px;
+    color: white;
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.4);
+    animation:popIn .25s ease ;
+  }
+ .modal-header{
+  display:flex ;
+  justify-content: space-between;
+  font-size: 20px;
+  font-weight:bold;
+ }
+ .close-btn{
+  cursor: pointer;
+  background: #2d2d47;
+  padding: 6px 12px;
+  border-radius: 10px;
+  transition: 0.2s;
+ }
+.close-btn:hover{
+  background:#e81123;
+}
+.share-icons{
+   display: flex;
+   gap: 14px;
+   margin: 18px 0;
+}
+.icon-box{
+  width: 45px;
+  height: 45px;
+  background: #2b2b46;
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: .2s;
+
+}
+.icon-box:hover{
+  background: #37375a;
+  transform: translateY(-3px);
+}
+/* Copy button*/
+.copy-box{
+   background: #2b2b46;
+   padding: 12px;
+   border-radius: 12px;
+   text-align: center;
+   cursor: pointer;
+   margin-top: 12px;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   gap: 6px;
+   transition: .2s;
+}
+.copy-box:hover{
+  background: #37375a;
+}
 
  /* Responsive adjustment */
 @media(max-width:480px){
