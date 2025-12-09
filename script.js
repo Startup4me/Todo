@@ -595,7 +595,39 @@ moreOptionsDropdown.addEventListener('click',(e)=>{
   }
 
   if (value === "menuInvite") {
-    console.log("Invite clicked");
+    const overlay=document.getElementById("overlay");overlay.style.display="flex";
+  const modal=  document.querySelector(".modal");
+  modal.addEventListener('click',async(e)=>{
+    const el =e.target;
+    if(el.closest("#closeBtn")){
+      overlay.style.display="none";
+    }else if(el.closest("#copyBox")){
+      navigator.clipboard.writeText("https://mytodo-5.vercel.app");
+      alert("Link copied!");
+    }else if(el.closest("#more")){
+  
+      const shareData = {
+        title: 'Join my Todo app',
+        text: "A fast, clean and simple todo app. Organize your life in seconds.",
+        url:"https://mytodo-5.vercel.app"
+      };
+      if (navigator.share){
+        try{
+          await navigator.share(shareData);
+          showToast('shared','demo');
+        }catch(err){
+          //user cancelled or error
+          console.warn('Share cancelled/failed',err); }
+      }else{
+      // if no native share, fallback to "More" action
+      showToast('System share not availble - use the tiles below.','demo');
+      }
+     
+    }
+  })
+
+    // console.log("Invite clicked");
+
   }
 });
 

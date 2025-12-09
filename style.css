@@ -662,6 +662,7 @@ width: calc(100% +40px);
    .toast-warning{background:#1e293b;}
    .toast-all{background: #ef4444;}
   .toast-edit{background: #16A34A;}
+  .toast-demo{background: linear-gradient(135deg, #6a11cb, #2575fc);}
 
   .undo-btn{
     background: none;
@@ -678,7 +679,7 @@ width: calc(100% +40px);
      inset: 0;
      background: rgba(0, 0, 0, 0.45);
     backdrop-filter: blur(4px);
-    display: flex;
+    display: none;
     justify-content: center;
     align-items: center;
     animation: fadeIn .25s ease;
