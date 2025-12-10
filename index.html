@@ -2,11 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+  <meta name="viewport"  content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
   <!-- Essential Meta Tags -->
    <meta property="og:title" content="Join my Todo App"/>
    <meta property="og:description" content="A fast, clean and simple todo app. Organize your life in seconds."/>
    <meta property="og:image" content="https://mytodo-5.vercel.app/assets/Preview.png" />
+   <meta property="og:image:width" content="1200"/>
+   <meta property="og:image:height" content="630" />
    <meta property="og:url" content="https://mytodo-5.vercel.app" />
    <meta property="og:type" content="website" /> 
   <!-- Optional but good for twitter -->
@@ -171,9 +173,11 @@
 
        <div class="modal-header">
         Share
-        <div class="close-btn" id="closeBtn">✕</div>
+        <div  class="close-btn" id="closeBtn">
+         <img src="assets/icons/cross.svg" >
+        </div>
        </div>
-       <p style="margin-top:14px;font-size: 15px;opacity: 0.8;;">Share link via</p>
+       <p style="margin-top:30px;font-size: 16px;opacity: 0.8;;">Share link via</p>
       
       <div class="share-icons">
         <!--X-->
@@ -199,10 +203,9 @@
 
         
       </div>
+      <p style="margin-top:30px;font-size: 17px;font-weight: bolder;" >Page direct</p>
       <div class="copy-box" id="copyBox">
-        <svg width="18" height="18" fill="white">
-                <path d="M5 12l5-5 5 5" stroke="white" stroke-width="2" fill="none"/>
-            </svg>
+    <img src="assets/icons/link.svg" >
             Copy link  
       </div>
      </div>

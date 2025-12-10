@@ -679,7 +679,7 @@ width: calc(100% +40px);
      inset: 0;
      background: rgba(0, 0, 0, 0.45);
     backdrop-filter: blur(4px);
-    display: none;
+    display: flex;
     justify-content: center;
     align-items: center;
     animation: fadeIn .25s ease;
@@ -697,13 +697,16 @@ width: calc(100% +40px);
  .modal-header{
   display:flex ;
   justify-content: space-between;
-  font-size: 20px;
+  font-size: 23px;
   font-weight:bold;
  }
  .close-btn{
+  display: flex;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
   background: #2d2d47;
-  padding: 6px 12px;
+  padding: 12px 12px;
   border-radius: 10px;
   transition: 0.2s;
  }
@@ -716,8 +719,8 @@ width: calc(100% +40px);
    margin: 18px 0;
 }
 .icon-box{
-  width: 45px;
-  height: 45px;
+  width:55px;
+  height: 53px;
   background: #2b2b46;
   border-radius: 12px;
   display: flex;
@@ -748,6 +751,8 @@ width: calc(100% +40px);
 .copy-box:hover{
   background: #37375a;
 }
+
+
 
  /* Responsive adjustment */
 @media(max-width:480px){
