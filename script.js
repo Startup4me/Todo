@@ -595,13 +595,35 @@ moreOptionsDropdown.addEventListener('click',(e)=>{
   }
 
   if (value === "menuInvite") {
-    const overlay=document.getElementById("overlay");overlay.style.display="flex";
+    const overlay=document.getElementById("overlay");
+  overlay.style.display="flex";
   const modal=  document.querySelector(".modal");
+  const url = "https://mytodo-5.vercel.app";
+  const text = "A fast, clean and simple todo app. Organize your life in seconds.";
+  const message = `${text}\n${url}`;
   modal.addEventListener('click',async(e)=>{
     const el =e.target;
     if(el.closest("#closeBtn")){
       overlay.style.display="none";
-    }else if(el.closest("#copyBox")){
+
+    }else if(el.closest('#twitter')){
+     const tw ='https://twitter.com/intent/tweet?text=' + encodeURIComponent(message);
+     window.open(tw,'_blank','noopener');
+
+    }else if(el.closest('#facebook')){
+    const fb = "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(url);
+    window.open(fb, "_blank", "noopener");
+    }
+    else if(el.closest('#linkedin')){
+    const li = "https://www.linkedin.com/sharing/share-offsite/?url=" + encodeURIComponent(url);
+    window.open(li,"_blank","noopener"); 
+    } 
+    else if(el.closest('#telegram')){
+    const t ='https://t.me/share/url?url=' +
+    encodeURIComponent(message);
+    window.open(t,'_blank','noopener');
+    }
+    else if(el.closest("#copyBox")){
       navigator.clipboard.writeText("https://mytodo-5.vercel.app");
       alert("Link copied!");
     }else if(el.closest("#more")){
@@ -620,7 +642,7 @@ moreOptionsDropdown.addEventListener('click',(e)=>{
           console.warn('Share cancelled/failed',err); }
       }else{
       // if no native share, fallback to "More" action
-      showToast('System share not availble - use the tiles below.','demo');
+      showToast('System share not availble.','demo');
       }
      
     }
