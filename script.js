@@ -597,6 +597,8 @@ moreOptionsDropdown.addEventListener('click',(e)=>{
   if (value === "menuInvite") {
     const overlay=document.getElementById("overlay");
   overlay.style.display="flex";
+}
+});
   const modal=  document.querySelector(".modal");
   const url = "https://mytodo-5.vercel.app";
   const text = "A fast, clean and simple todo app. Organize your life in seconds.";
@@ -646,12 +648,12 @@ moreOptionsDropdown.addEventListener('click',(e)=>{
       }
      
     }
-  })
+  }) 
 
     // console.log("Invite clicked");
 
-  }
-});
+  
+
 
 function showToast(message, type, includeUndo =false){
  const toastContainer = document.getElementById('toast');
