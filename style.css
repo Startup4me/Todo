@@ -59,12 +59,13 @@ body{
   gap: 10px;
 }
 .logo{
-   width: 40px;
+   width: 40px; 
    height:40px;
    object-fit: contain;
 }
 .title-with-arrow{
   display:flex;
+  padding:15px 15px 15px 0px;
   align-items: center;
   gap: 5px;
 }
