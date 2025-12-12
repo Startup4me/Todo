@@ -345,13 +345,20 @@ width: calc(100% +40px);
 
 /* Icon button style (for phones) */
 .btn-cancel.icon-btn{
-  color: #aaa;
+  color: #aaa; 
   font-size: 22px;
 }
 .btn-add.icon-btn{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
   color: #aaa;
   background:#eee ;
-  font-size: 24px;
+}
+.btn-add.icon-btn:hover{
+  color: white;
+  background-color: #4a67e8;
 }
 .btn-add.icon-btn.active{
   background-color: #4a67e8;
