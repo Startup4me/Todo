@@ -349,12 +349,14 @@ width: calc(100% +40px);
   font-size: 22px;
 }
 .btn-add.icon-btn{
-  display: flex;
-  align-items: center;
-  justify-content: center;
   padding: 8px 12px;
   color: #aaa;
   background:#eee ;
+}
+.btn-add.icon-btn svg{
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .btn-add.icon-btn:hover{
   color: white;
