@@ -92,16 +92,7 @@ function addTask(e){
     finalDate=new Date(customDateInput.value).toDateString();
    
   }
- 
-  const flag= document.createElement('span');
-  flag.classList.add('flag');
-  if(priority==='low') flag.classList.add('priority-low');
-  if(priority==='medium') flag.classList.add('priority-medium');
-    if(priority==='high') flag.classList.add('priority-high');
-      if(priority==='urgent') flag.classList.add('priority-urgent');
-      flag.textContent='⚑'
-
-  
+    
   const newTask ={ title, desc, date: finalDate, priority, completed: false};
   renderTask(newTask);
   saveTasks();
@@ -183,7 +174,7 @@ function renderTask(task,isCompleted=false){
 
   const flag = document.createElement('span');
   flag.classList.add('flag',`priority-${task.priority}`);
-  flag.textContent = '⚑';  
+  flag.innerHTML = `<svg width="18px" height="18px" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M288 128h608L736 384l160 256H288v320h-96V64h96v64z"/></svg>`;  
 
   taskFooter.appendChild(dateEl);
   taskFooter.appendChild(flag);
