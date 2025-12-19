@@ -19,7 +19,7 @@
 
   <title>Todo App</title>
   <!-- WEB favicon -->
-   <link rel="icon" type="image/png" href="assets/image.jpg">
+   <link rel="icon" type="image/png" href="assets/favicon.png">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -171,12 +171,12 @@
   </div>
   
   <!-- Invite Modal -->
-   <div id="overlay">
+   <div class="overlay" id="inviteOverlay">
      <div class="modal">
 
        <div class="modal-header">
         Share
-        <div  class="close-btn" id="closeBtn">
+        <div  class="close-btn js-close" >
          <img src="assets/icons/cross.svg" >
         </div>
        </div>
@@ -217,11 +217,13 @@
    <!-- Auth Overlay-->
   <div class="overlay" id="authOverlay">
     <div class="auth-card">
-     <img class="cloud" style="width: 100px; height: 100px;" src="https://cdn-icons-png.flaticon.com/512/4380/4380600.png" alt="cloud"/>
+
+    <div><img src="assets/icons/cross.svg" class="close-btn close-btn--absolute js-close" alt="cross"></div>
+     <img class="cloud" style="width: 120px; height: 120px;" src="assets/cloud_sync.png" alt="cloud"/>
      <h2>Sign in to sync your tasks</h2>
      <p>Access your todos across all devices securely.</p>
      <button class="google-btn" id="googleLogin">
-        <img src="https://www.svgrepo.com/show/475656/google-color.svg" width="22" />
+        <img src="assets/icons/google.svg"  />
         Continue with Google
      </button>
     </div>
