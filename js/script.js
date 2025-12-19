@@ -588,8 +588,7 @@ moreOptionsDropdown.addEventListener('click',(e)=>{
   }
 
   if (value === "menuInvite") {
-    const overlay=document.getElementById("overlay");
-  overlay.style.display="flex";
+   openOverlay("inviteOverlay");
 }
 });
   const modal=  document.querySelector(".modal");
@@ -598,10 +597,8 @@ moreOptionsDropdown.addEventListener('click',(e)=>{
   const message = `${text}\n${url}`;
   modal.addEventListener('click',async(e)=>{
     const el =e.target;
-    if(el.closest("#closeBtn")){
-      overlay.style.display="none";
-
-    }else if(el.closest('#twitter')){
+  
+      if(el.closest('#twitter')){
      const tw ='https://twitter.com/intent/tweet?text=' + encodeURIComponent(message);
      window.open(tw,'_blank','noopener');
 
@@ -642,8 +639,20 @@ moreOptionsDropdown.addEventListener('click',(e)=>{
      
     }
   }) 
-
-    // console.log("Invite clicked");
+ //By ID as a key to open overlay
+ function openOverlay(id){
+  console.log("invite");
+  //open the one you want by id
+  document.getElementById(id).classList.add("active");
+ }
+  //Global cancel functioning
+  document.addEventListener("click",(e)=>{
+    const closeBtn = e.target.closest(".js-close");
+  if(!closeBtn) return;//👈🏻 IMPORTANT
+  
+  const overlay = closeBtn.closest(".overlay");
+  overlay.classList.remove("active");
+  });
 
 function showToast(message, type, includeUndo =false){
  const toastContainer = document.getElementById('toast');
@@ -666,23 +675,70 @@ function showToast(message, type, includeUndo =false){
   },4000);
 }
 // Supabase
-async function checkAuth(){
+/*async function checkAuth(){
   const { data, error } = await supabase.auth.getUser();
 
+   // IMPORTANT: ignore missing session error
   if(error){
-    console.error(error);
+    console.log("No active session");
+    console.warn(error);
     return;
   }
-
-  if(data.user){
+ 
+  if(data?.user){
     console.log("Logged in:", data.user.email);
   }else{
     console.log("Not logged in");
   }
 }
+checkAuth();  */
+supabase.auth.onAuthStateChange((event, session) => {
+  if(event === "SIGNED_IN"){
+    profileImg.src = session.user.user_metadata.avatar_url;
+    authOverlay.classList.remove("show");
+  }else if(event === "SIGNED_OUT"){
+    profileImg.src ="https://picsum.photos/seed/profile/200";
+  } 
+  console.log("Auth event:",event);
 
-checkAuth(); 
+  if(session?.user){
+    console.log("User logged in:",session.user.email);
+  }else{
+    console.log("No active session");
+  }
+})
 
+// async function checkAuth() {
+//   const { data, error } = await supabase.auth.getSession();
+
+//   if (!data.session) {
+//     console.log("No active session");
+//     return;
+//   }
+
+//   console.log("Logged in:", data.session.user.email);
+// }
+
+// checkAuth();
+ 
+const profileBox = document.querySelector(".profile-box");
+const profileImg = profileBox.querySelector("img");
+const authOverlay = document.getElementById("authOverlay");
+const googleBtn =document.getElementById("googleLogin");
+profileBox.addEventListener("click",()=>{
+  openOverlay("authOverlay");
+})
+googleBtn.addEventListener("click",async () => {
+    await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: window.location.origin + window.location.pathname
+      }
+    }); 
+  }); 
+
+  
+ 
 
 // INIT APP
 window.addEventListener('DOMContentLoaded',()=>{ 
