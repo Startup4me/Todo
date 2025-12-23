@@ -784,27 +784,29 @@ width: calc(100% +40px);
   justify-content: center;
   opacity: 0; 
   pointer-events: none;
+  transition: opacity 0.25s ease;
  
 } 
-.active{
+.overlay.active{
    opacity: 1;
    pointer-events: auto;}
    
   .overlay.active .auth-card,
   .overlay.active .modal{
+    
     transform: translateY(0) scale(1);
-    opacity: 1;
-       
+    opacity: 1; 
+   /* Open animation */    
   transition:
-    transform 0.35s cubic-bezier(.22,1,.36,1);
-    transition-delay: 0.07s;
+    transform 0.45s cubic-bezier(.22,1,.36,1),opacity 0.35s ease;
+    transition-delay:0.08s; 
   }
  .auth-card,.modal{
   transform: translateY(12px) scale(0.96);
   opacity: 0; 
-   transition:
-  transform 0.25s cubic-bezier(.4,0,.6,1) /* snappy close */, 
-  opacity 0.35s ease;
+   transition: 
+  transform 0.22s cubic-bezier(.4,0,.6,1) /* snappy close */, 
+  opacity 0.25s ease; 
  }
 .auth-card{
   position: relative;
@@ -816,8 +818,6 @@ width: calc(100% +40px);
   box-shadow: 0 30px 80px rgba(0,0,0,.45);
   color: white;
  
-
-
 }
 
 
