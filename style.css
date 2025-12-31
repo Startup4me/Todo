@@ -297,13 +297,13 @@ caret-color: #4a63d7;
 }
 #custom-date:focus{
   outline: none;
-  border-color: #4a63d7;
+  border-color: #4a63d7 ;
   box-shadow:  0 0 5px #667eea;
 }
  .form-divider{
  border-bottom: 1px solid grey;
 margin: 5px -20px 0px -20px;
-width: calc(100% +40px);
+width: calc(100% + 40px);
 
   
  }
@@ -639,9 +639,10 @@ width: calc(100% +40px);
     border-radius: 8px;
     color: white;
     font-weight: 700;
-    font-size: 15px;
-    min-width: 240px;
-    max-width: 90vw; 
+    font-size: 17px;  
+    height: 30px;
+    min-width: 260px;
+    max-width: 90vw;
     justify-content: center;
     margin-top: 12px;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
