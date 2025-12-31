@@ -187,7 +187,7 @@ function renderTask(task,isCompleted=false){
   taskFooter.appendChild(dateEl);
   taskFooter.appendChild(flag);
  
-  taskCard.appendChild(taskFooter);
+  taskCard.appendChild(taskFooter); 
 
   // --- Edit & Delete button ---
  const actions = document.createElement('div');
