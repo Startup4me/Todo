@@ -8,9 +8,10 @@ body{
   display: flex;
   justify-content: center;
   /* align-items: center; */
-  min-height: 100vh;
+  min-height: 100vh; 
   color: #333;
 }
+
 
 .todo-app{ 
   margin-top: 2px; 
